@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="mobile-web-app-capable" content="yes">
-	<title>Treacy Fencing</title>
+	<title>Magic Smile</title>
  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 <style type="text/css">
@@ -48,9 +48,9 @@ function errorHandler()
 
 function jkinit()
 {
-     juser=window.localStorage.getItem('juser');
-     if (juser) {
-            $("#nam").html('Hello, '+window.localStorage.getItem('jname'));
+     var dcode=window.localStorage.getItem('dcode');
+     if (!dcode) dcode='';
+     if (dcode.length) {
             $("#pan2").show();
      }
           else {
@@ -59,23 +59,25 @@ function jkinit()
 }
 
 function jlogin()
-{ url='http://treacydata.com/logmob.php?uname='+$("#uname").val()+'&pass='+$("#pass").val();
+{ url='http://brandonkur.com.au/dcode.php?dcode='+$("#dcode").val();
   $.ajax({url: url, 
     success : function(result) {
-      a=result.split('~');
-      if (a[0]>0) {
-         juser=a[0];
-         window.localStorage.setItem('juser',juser);
-         window.localStorage.setItem('jname',a[1]);
-            $("#nam").html('Hello, '+a[1]);
+      if (result.length) {
+         window.localStorage.setItem('dcode',result);
             $("#pan1").hide();
             $("#pan2").show();
 
       }
-      else
-         alert('Invalid Login Details');        
+      else {
+         $("#err").show();
+         setTimeout(noshow,2000);
+      }
     }
   });
+}
+
+function noshow()
+{ $("#err").hide();
 }
 
 function writeLog(b) {
@@ -88,54 +90,9 @@ fileWriter.onwriteend = function(e) {
 	}, fail);
 }
 
-function b64toBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || '';
-    sliceSize = sliceSize || 512;
-
-    var byteCharacters = atob(b64Data);
-    var byteArrays = [];
-
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        var byteNumbers = new Array(slice.length);
-        for (var i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        var byteArray = new Uint8Array(byteNumbers);
-
-        byteArrays.push(byteArray);
-    }
-
- try{
-       blob = new Blob( byteArrays, {type : contentType});
-    }
-    catch(e){
-        // TypeError old chrome and FF
-        window.BlobBuilder = window.BlobBuilder || 
-                             window.WebKitBlobBuilder || 
-                             window.MozBlobBuilder || 
-                             window.MSBlobBuilder;
-        if(e.name == 'TypeError' && window.BlobBuilder){
-            var bb = new BlobBuilder();
-            bb.append(byteArrays.buffer);
-            blob = bb.getBlob(contentType);
-        }
-        else if(e.name == "InvalidStateError"){
-            // InvalidStateError (tested on FF13 WinXP)
-            blob = new Blob(byteArrays, {type : contentType});
-        }
-        else{
-alert('notsupported');
-            // We're screwed, blob constructor unsupported entirely   
-        }
-    }    
-    return blob;
-}
 
 function takepic()
-{navigator.camera.getPicture(onSuccess, onFail, { quality: 50, targetWidth: 650, targetHeight: 650, 
+{navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 550, targetHeight: 550, 
     destinationType: Camera.DestinationType.DATA_URL
   });
 }
@@ -153,8 +110,6 @@ function onFail(message) {
 }
 
 var win = function (r) {
-//  alert(r.bytesSent+' sent');
-// alert(r.response);
           $("#mylist").html(r.response);
          $("#mylist").trigger('create');
  
@@ -172,11 +127,10 @@ function doupload()
  options.mimeType = "application/base64";
  options.trustAllHosts = true;
  var params = {};
- params.value1 = juser;
- params.value2 = jobno;
+ params.value1 = window.localStorage.getItem('dcode');
  options.params = params;
  var ft = new FileTransfer();
- ft.upload(fileURL, encodeURI("http://treacydata.com/uploadpic.php"), win, fail, options);
+ ft.upload(fileURL, encodeURI("http://brandonkur.com.au/uploadpic.php"), win, fail, options);
 }
 
 function jlogout()
@@ -185,44 +139,12 @@ function jlogout()
   $("#pan1").show();
 }
 
-
 function clrsearch()
 { $("#lotno").val('');
   $("#cname").val('');
   $("#other").val('');
 }
 
-function dosearch()
-{ var url='http://treacydata.com/dosearch.php?lotno='+$("#lotno").val()+"&cname="+$("#cname").val()+"&other="+$("#other").val();
-  $.ajax({url: url, 
-    success : function(result) {
-         $("#mylist").html(result);
-         $("#mylist").trigger('create');
-         jQuery.mobile.changePage("#listpage", {transition: "flip"});
-    }
-  });
-}
-
-function sendnote()
-{ var url="http://treacydata.com/sendnote.php?jid="+jobno+"&rep="+juser+"&mess="+encodeURI($("#txt").val());
-  $.ajax({url: url, 
-    success : function(result) {
-         $("#mylist").html(result);
-         $("#mylist").trigger('create');
-    }
-  });
-}
-
-function findmine()
-{ var url='http://treacydata.com/findmine.php?id='+juser.toString();
-  $.ajax({url: url, 
-    success : function(result) {
-         $("#mylist").html(result);
-         $("#mylist").trigger('create');
-         jQuery.mobile.changePage("#listpage", {transition: "flip"});
-    }
-  });
-}
 
 function gojob(a,t)
 { var url='http://treacydata.com/gojob.php?id='+a.toString()+'&typ='+t;
@@ -240,35 +162,40 @@ function gojob(a,t)
 </head>
 <body onload="jkinit()">
 
-<div data-role="page" id="intropage" >
-<div data-role="header" data-theme="a" >
-<h3 name="nam" id="nam">Treacy Fencing</h3>
- </div>
- <div role="main" class="ui-content">
-<div name="pan1" id="pan1" style="display:none">
-<center>
-Log-In
-<br>
-<label for="uname">UserName</label>
-<input type="text" name="uname" id="uname" autocorrect="off" autocapitalize="off" autocomplete="off" >
-<br>
-<label for="pass">Password</label>
-<input type="password" name="pass" id="pass" autocorrect="off" autocapitalize="off" autocomplete="off" >
-<br>
-<input type="button" style="background-color:lightgreen" value="LOG IN" onclick="jlogin();">
-</div>
+<div data-role="page" id="intropage" style="background-color:#BAD8FA">
 
-<div name="pan2" id="pan2" style="display:none">
-<label for="lotno">LotNumber</label>
-<input type="number" name="lotno" id="lotno" autocorrect="off" autocapitalize="off" autocomplete="off" >
-<label for="cname">Customer Name</label>
-<input type="text" name="cname" id="cname" autocorrect="off" autocapitalize="off" autocomplete="off" >
-<label for="other">Other Detail</label>
-<input type="text" name="other" id="other" autocorrect="off" autocapitalize="off" autocomplete="off" >
+ <div role="main" class="ui-content">
+<div name="pan1" id="pan1" style="display:none; background-color:#BAD8FA; background-image:url('back1.jpg'); backgroud-repeat:no-repeat; background-size:cover; height:100%; width:100%">
+<div style="padding-left:20px">
+<b style="color:dodgerblue">MagicSmile</b>
+<br><br>
+<p>You won't recognize yourself!</p>
+<p><small>Please Enter the Code from your dentist</small></p>
+<div class="ui-grid-a">
+<div class="ui-block-a">
+<label for="dcode">Access Code</label>
+<input type="text" name="dcode" id="dcode" size="6" autocorrect="off" autocapitalize="off" autocomplete="off" >
+<br><span id="err" style="color:red; display:none">Invalid Code</span>
 <br>
-<a href="#" class="ui-btn ui-corner-all" onclick="dosearch();" style="background-color:MediumSeaGreen">SEARCH</a>
-<a href="#" class="ui-btn ui-corner-all" onclick="clrsearch();" style="background-color:lightcoral">CLEAR</a>
-<a href="#" class="ui-btn ui-corner-all"  onclick="findmine();" style="background-color:dodgerblue">MY JOBS</a>
+<br>
+
+<input type="button" style="background-color:#66ff66" value="LOG IN" onclick="jlogin();">
+<br><br>
+
+</div>
+<div class="ui-block-b"> &nbsp; </div>
+</div>
+</div>
+</div>
+<div name="pan2" id="pan2" style="display:none">
+<p>Instructions go here</p>
+<div id="mylist">
+</div>
+<button class="ui-btn ui-icon-camera ui-btn-icon-top" style="background-color:#99ff99" onclick="takepic();">TAKE PICTURE</button>
+<br>
+<input type="button" style="background-color:tomato" value="LOG-OUT" onclick="jlogout();">
+
+
 </div>
 </div>
 </div>
