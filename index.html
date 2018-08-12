@@ -22,6 +22,8 @@ var logOb;
 var fileURL='';
 var nameFile, fsroot=null;
 var juser=0, jobno=0;
+var tot;
+var imex=0;
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -51,11 +53,19 @@ function jkinit()
      var dcode=window.localStorage.getItem('dcode');
      if (!dcode) dcode='';
      if (dcode.length) {
-            $("#pan2").show();
+         jQuery.mobile.changePage("#listpage", {transition: "flip"});
      }
-          else {
-            $("#pan1").show();
-     }       
+     tot = setTimeout(moveim,2000);
+}
+
+function moveim()
+{ imex = -250 - imex;
+  document.getElementById('expic').style.left= imex.toString()+'px';
+  tot = setTimeout(moveim,2000);
+}  
+
+function showpic(a)
+{ document.getElementById('expic').src='zfinal'+a.toString()+'.jpg';
 }
 
 function jlogin()
@@ -64,8 +74,7 @@ function jlogin()
     success : function(result) {
       if (result.length) {
          window.localStorage.setItem('dcode',result);
-            $("#pan1").hide();
-            $("#pan2").show();
+         jQuery.mobile.changePage("#listpage", {transition: "flip"});
 
       }
       else {
@@ -98,10 +107,6 @@ function takepic()
 }
 
 function onSuccess(imageData) {
-//    var image = document.getElementById('thispic');
-//    image.src = "data:image/jpeg;base64," + imageData;
-//    var blob = b64toBlob(imageData, 'image/jpeg');
-//    alert('sending: '+imageData.length);
     writeLog(imageData);
 }
 
@@ -135,14 +140,7 @@ function doupload()
 
 function jlogout()
 { window.localStorage.clear();
-  $("#pan2").hide();
-  $("#pan1").show();
-}
-
-function clrsearch()
-{ $("#lotno").val('');
-  $("#cname").val('');
-  $("#other").val('');
+         jQuery.mobile.changePage("#intropage", {transition: "flip"});
 }
 
 
@@ -162,10 +160,9 @@ function gojob(a,t)
 </head>
 <body onload="jkinit()">
 
-<div data-role="page" id="intropage" style="background-color:#BAD8FA">
+<div data-role="page" id="intropage" style="background-color:#BAD8FA; background-image:URL('intro.jpg'); background-repeat:no-repeat; background-size:cover">
 
  <div role="main" class="ui-content">
-<div name="pan1" id="pan1" style="display:none; background-color:#BAD8FA; background-image:url('back1.jpg'); backgroud-repeat:no-repeat; background-size:cover; height:100%; width:100%">
 <div style="padding-left:20px">
 <b style="color:dodgerblue">MagicSmile</b>
 <br><br>
@@ -187,27 +184,29 @@ function gojob(a,t)
 </div>
 </div>
 </div>
-<div name="pan2" id="pan2" style="display:none">
-<div id="mylist">
-<p>Instructions go here</p>
-<p>View example photos and show tips for taking best photo</p>
-</div>
-<button class="ui-btn ui-icon-camera ui-btn-icon-top" style="background-color:#BBffBB" onclick="takepic();">TAKE PICTURE</button>
-<br>
-<input type="button" style="background-color:tomato" value="LOG-OUT" onclick="jlogout();">
-
-
-</div>
-</div>
 </div>
 
-<div data-role="page" id="listpage" >
-<div data-role="header" data-position="fixed">
-<div style="float:left" id="custom-border-radius"><a href="#intropage" class="ui-btn ui-icon-back ui-btn-icon-notext ui-corner-all">Back</a></div>
-<h3>Treacy Fencing</h3>
- </div>
+<div data-role="page" id="listpage" style="background-color:#BAD8FA">
 <div role="main" class="ui-content">
+<center>
+<div data-role="controlgroup" data-type="horizontal">
+ <a href="#" class="ui-btn ui-corner-all" onclick="showpic(1);"> 1 </a>
+ <a href="#" class="ui-btn ui-corner-all" onclick="showpic(2);"> 2 </a>
+ <a href="#" class="ui-btn ui-corner-all" onclick="showpic(3);"> 3 </a>
+</div>
 
+<div name="picholder" id="picholder" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
+<img id="expic" name="expic" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
+</div>
+</center>
+</div>
+<div data-role="footer" data-position="fixed" style="overflow:hidden; ">
+ <div data-role="navbar">
+ <ul>
+  <li><a href="#" data-icon="camera" onclick="takepic()">Take Picture</a></li>
+  <li><a href="#" data-icon="user" onclick="">My Account</a></li>
+  <li><a href="#" data-icon="back" onclick="jlogout()">Log-Out</a></li>
+ </ul>
 </div>
 </div>
 
