@@ -93,7 +93,7 @@ fileWriter.onwriteend = function(e) {
 
 function takepic()
 {navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 550, targetHeight: 550, 
-    destinationType: Camera.DestinationType.DATA_URL
+    correctOrientation: true, cameraDirection : FRONT, destinationType: Camera.DestinationType.DATA_URL
   });
 }
 
