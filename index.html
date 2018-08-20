@@ -8,9 +8,18 @@
  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 <style type="text/css">
-.jobd {
-background-color:lightskyblue; width:95%; padding:2px 10px 2px 10px;
+.mycol {
+background-color:dodgerblue;
 }
+
+.ui-page-theme-a .ui-btn.ui-btn{
+    background-color: lightskyblue !important;
+}
+
+.ui-page-theme-a .ui-btn.ui-btn-active{
+    background-color: lightskyblue !important;
+}
+
 </style>
 	<script src="phonegap.js"></script>
       <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -24,6 +33,8 @@ var nameFile, fsroot=null;
 var juser=0, jobno=0;
 var tot;
 var imex=0;
+var picnum="";
+var ans2, ans3, ans4, ans5;
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -63,19 +74,32 @@ function errorHandler()
 }
 
 function jkinit()
-{
-     var dcode=window.localStorage.getItem('dcode');
-     if (!dcode) dcode='';
-     if (dcode.length) {
-         jQuery.mobile.changePage("#listpage", {transition: "flip"});
-     }
-     tot = setTimeout(moveim,2000);
+{  picnum=window.localStorage.getItem('picnum');
+   if (!picnum) picnum='';
 }
 
-function moveim()
+function moveim2()
 { imex = -250 - imex;
-  document.getElementById('expic').style.left= imex.toString()+'px';
-  tot = setTimeout(moveim,2000);
+  document.getElementById('expic2').style.left= imex.toString()+'px';
+  tot = setTimeout(moveim2,1500);
+}  
+
+function moveim3()
+{ imex = -250 - imex;
+  document.getElementById('expic3').style.left= imex.toString()+'px';
+  tot = setTimeout(moveim3,1500);
+}  
+
+function moveim4()
+{ imex = -250 - imex;
+  document.getElementById('expic4').style.left= imex.toString()+'px';
+  tot = setTimeout(moveim4,1500);
+}  
+
+function moveim5()
+{ imex = -250 - imex;
+  document.getElementById('expic5').style.left= imex.toString()+'px';
+  tot = setTimeout(moveim5,1500);
 }  
 
 function showpic(a)
@@ -104,7 +128,8 @@ function noshow()
 }
 
 function writeLog(b) {
-	if(!logOb) return;
+    page7();
+    if(!logOb) return;
     logOb.createWriter(function(fileWriter) {
 fileWriter.onwriteend = function(e) {
         doupload();
@@ -112,7 +137,6 @@ fileWriter.onwriteend = function(e) {
 		fileWriter.write(b);
 	}, fail);
 }
-
 
 function takepic()
 {navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 550, targetHeight: 550, 
@@ -129,9 +153,8 @@ function onFail(message) {
 }
 
 var win = function (r) {
-          $("#mylist").html(r.response);
-         $("#mylist").trigger('create');
- 
+     alert(r.response);
+     picnum = r.response;
 }
 
 var fail = function (error) {
@@ -158,14 +181,90 @@ function jlogout()
 }
 
 
-function gojob(a,t)
-{ var url='http://treacydata.com/gojob.php?id='+a.toString()+'&typ='+t;
-  jobno=a;
+
+function page2()
+{
+         jQuery.mobile.changePage("#page2", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+         imex=-250;
+         moveim2(); 
+}
+
+function page3()
+{
+         jQuery.mobile.changePage("#page3", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+         imex=-250;
+         moveim3(); 
+
+}
+
+function page4()
+{
+         jQuery.mobile.changePage("#page4", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+         imex=-250;
+         moveim4(); 
+
+}
+
+function page5()
+{
+         jQuery.mobile.changePage("#page5", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+         imex=-250;
+         moveim5(); 
+}
+
+function page6()
+{
+         jQuery.mobile.changePage("#page6", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+}
+
+function page7()
+{ 
+         jQuery.mobile.changePage("#page7", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+}
+
+
+function apage2(a)
+{   ans2=a;
+    page3();
+}
+
+function apage3(a)
+{   ans3=a;
+    page4();
+}
+
+function apage4(a)
+{   ans4=a;
+    page5();
+}
+
+function apage5(a)
+{
+    ans5=a;
+    page6();
+}
+
+function dosend()
+{ url='http://brandonkur.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~'+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5);
   $.ajax({url: url, 
     success : function(result) {
-         $("#mylist").html(result);
-         $("#mylist").trigger('create');
-         jQuery.mobile.changePage("#listpage", {transition: "flip"});
+      var l = result.split('~');
+      if (l[0]=='1') {
+         picnum=l[1];
+         window.localStorage.setItem('picnum',picnum);
+         jQuery.mobile.changePage("#mypage", {transition: "flip"});
+      }
+      else {
+         $("#err").html(l[1]);
+         $("#err").show();
+         setTimeout(noshow,2000);
+      }
     }
   });
 }
@@ -174,51 +273,187 @@ function gojob(a,t)
 </head>
 <body onload="jkinit()">
 
-<div data-role="page" id="intropage" style="background-color:#BAD8FA; background-image:url('back.jpg'); background-repeat:no-repeat; background-size:cover">
+<div data-role="page" id="intropage" style="background-color:white">
 
  <div role="main" class="ui-content">
-<div style="padding-left:20px">
-<b style="color:lightskyblue">ADS Magic Smile</b>
-<br><br>
-<p style="color:white">You won't recognize yourself!</p>
-<p style="color:white">Most people don't realize how much better we look with white, straight, perfect teeth</p>
-<p style="color:white"><small>Please Enter the Code from your dentist</small></p>
-<label for="dcode">Access Code</label>
-<input type="text" name="dcode" id="dcode" size="6" autocorrect="off" autocapitalize="off" autocomplete="off" >
-<br><span id="err" style="color:red; display:none">Invalid Code</span>
-<br>
-<br>
-
-<input type="button" style="background-color:#66ff66" value="LOG IN" onclick="jlogin();">
-<br><br>
-
-</div>
-</div>
-</div>
-</div>
-
-<div data-role="page" id="listpage" style="background-color:#BAD8FA; background-image:url('back.jpg'); background-repeat:no-repeat; background-size:cover">
-<div role="main" class="ui-content">
+<div style="padding:0px 10px 0px 10px">
 <center>
-<div data-role="controlgroup" data-type="horizontal">
- <a href="#" class="ui-btn ui-corner-all" onclick="showpic(1);"> 1 </a>
- <a href="#" class="ui-btn ui-corner-all" onclick="showpic(2);"> 2 </a>
- <a href="#" class="ui-btn ui-corner-all" onclick="showpic(3);"> 3 </a>
+<b style="color:lightskyblue">ADS Magic Smile</b>
+</center>
+<br><img src="allsmiles.jpg" style="max-width:100%; height:auto"><br>
+<p><i>Did You Know?</i></p>
+<p>Research shows that smiling makes you look younger, thinner and more competent!</p>
+<p>Plus it boost your mood and may even help you live longer!</p>
+<p>If the shape or colour of your teeth are making you smile less, you're only seconds away from making a real difference to your life</p>
+<br>
+
+
+<input type="button" style="background-color:dodgerblue" value="SEE MORE" onclick="page2();">
+<br><br>
+
+</div>
+</div>
 </div>
 
-<div name="picholder" id="picholder" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
-<img id="expic" name="expic" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
+
+<div data-role="page" id="page2" style="background-color:white">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b style="color:lightskyblue">ADS Magic Smile</b>
+   </center>
+   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>1. The colour of your teeth?</p>
+   <center>
+   <div name="picholder2" id="picholder2" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
+    <img id="expic2" name="expic2" style="position:absolute; left:0px" src="zfinal3.jpg" width="500">
+   </div>
+   <br>
+   <div data-role="controlgroup" data-type="horizontal">
+    <a href="#" onclick="javascript:apage2(1);" class="mycol ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
+    <a href="#" onclick="javascript:apage2(0);" class="mycol ui-btn ui-corner-all ui-icon-delete ui-btn-icon-right">No</a>
+   </div> 
+  </center>
+  </div>
+ </div>
 </div>
-</center>
+
+<div data-role="page" id="page3" >
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b style="color:lightskyblue">ADS Magic Smile</b>
+   </center>
+   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>2. The shape of your teeth?</p>
+   <center>
+   <div name="picholder3" id="picholder3" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
+    <img id="expic3" name="expic3" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
+   </div>
+   <br>
+   <div data-role="controlgroup" data-type="horizontal">
+    <a href="#" onclick="javascript:apage3(1);" class="mycol ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
+    <a href="#" onclick="javascript:apage3(0);" class="mycol ui-btn ui-corner-all ui-icon-delete ui-btn-icon-right">No</a>
+    <a href="#" onclick="javascript:page2();" class="mycol ui-btn ui-corner-all ui-icon-back ui-btn-icon-right">Go Back</a>
+   </div> 
+   </center>
+  </div>
+ </div>
 </div>
-<div data-role="footer" data-position="fixed" style="overflow:hidden; ">
- <div data-role="navbar">
- <ul>
-  <li><a href="#" data-icon="camera" onclick="takepic()">Take Picture</a></li>
-  <li><a href="#" data-icon="user" onclick="">My Account</a></li>
-  <li><a href="#" data-icon="back" onclick="jlogout()">Log-Out</a></li>
- </ul>
+
+<div data-role="page" id="page4" >
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b style="color:lightskyblue">ADS Magic Smile</b>
+   </center>
+   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>3. Do you have gaps between your teeth?</p>
+   <center>
+   <div name="picholder4" id="picholder4" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
+    <img id="expic4" name="expic4" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
+   </div>
+   <br>
+   <div data-role="controlgroup" data-type="horizontal">
+    <a href="#" onclick="javascript:apage4(1);" class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
+    <a href="#" onclick="javascript:apage4(0);" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-right">No</a>
+    <a href="#" onclick="javascript:page3();" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-right">Go Back</a>
+   </div> 
+   </center>
+  </div>
+ </div>
 </div>
+
+<div data-role="page" id="page5" >
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b style="color:lightskyblue">ADS Magic Smile</b>
+   </center>
+   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>4. Do you have skew teeth?</p>
+   <center>
+   <div name="picholder5" id="picholder5" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
+    <img id="expic5" name="expic5" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
+   </div>
+   <br>
+   <div data-role="controlgroup" data-type="horizontal">
+    <a href="#" onclick="javascript:apage5(1);" class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
+    <a href="#" onclick="javascript:apage5(0);" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-right">No</a>
+    <a href="#" onclick="javascript:page4();" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-right">Go Back</a>
+   </div> 
+   </center>
+  </div>
+ </div>
+</div>
+
+
+<div data-role="page" id="page6" >
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b style="color:lightskyblue">ADS Magic Smile</b>
+   </center>
+   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <label for="comment">5. Any other comments?</label>
+   <textarea name="comment" id="comment" rows="3" cols="40"></textarea>
+
+   <p style="font-size:1.3em; color:dodgerblue"><b>Are you curious to see how you could look?</b></p>
+   <p>Take a selfie of your smiling face with your teeth slightly apart and receive a free smile simulation showing how great you could look</p>
+   <a href="#" class="ui-btn ui-icon-camera ui-btn-icon-bottom" onclick="takepic()">Take Picture</a>
+  </div>
+ </div>
+</div>
+
+
+<div data-role="page" id="page7" >
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b style="color:lightskyblue">ADS Magic Smile</b>
+   </center>
+   <p>Please fill out your details for a no-obligation smile assessment from your dentist</p>
+
+   <label for="name">Your Name</label>
+   <input type="text" name="name" id="name">
+   <br>
+   <label for="email">Email Address</label>
+   <input type="text" name="email" id="email">
+   <br>
+   <label for="phone">Phone Number</label>
+   <input type="text" name="phone" id="phone">
+   <br>
+   <label for="phone">Dentist Code</label>
+   <input type="text" name="dcode" id="dcode">
+   <a href="#dpop" data-rel="popup" data-transition="pop" data-position-to="window"><small>Don't have a Dentist Code?</small></a>   
+   <div data-role="popup" id="dpop">
+   <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+   <div style="padding:0px 10px 0px 10px">
+   <p>Please ask your dentist for their ADS Magic Code</p>
+   <p>If they don't already have one, ask them to register on our site at :-</p>
+   <p style="color:dodgerblue"><b>http://adsmagic.com.au</b></p>
+   <p>... or let us talk to them</p>
+   <label for="dentname">Your Dental Practice</label>
+   <input type="text" name="dentname" id="dentname">
+   <br><br>
+   <button class="ui-btn ui-corner-all ui-mini">Contact My Dentist</button> 
+   <br><br>
+   </div>  
+   </div>
+   <br><div id="err" style="display:none; color:red; font-weight:bold"></div><br>
+   <a href="#" class="ui-btn" onclick="dosend()">Send</a>
+  </div>
+ </div>
+</div>
+
+<div data-role="page" id="mypage" >
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+ <p>Success</p>
+  
+   <a href="#" class="ui-btn" onclick="page2()">Start Again</a>
+  </div>
+ </div>
 </div>
 
 </body>
