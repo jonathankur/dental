@@ -13,11 +13,38 @@ background-color:dodgerblue;
 }
 
 .ui-page-theme-a .ui-btn.ui-btn{
-    background-color: lightskyblue !important;
+    background-color: #D8D8D8 !important;
 }
 
 .ui-page-theme-a .ui-btn.ui-btn-active{
-    background-color: lightskyblue !important;
+    background-color: #D8D8D8 !important;
+}
+
+.mypg {
+  background-color:#FAFAFA !important;
+}
+
+.jhead {
+  color: #303060 !important;
+}
+
+.befaft {
+ background-color: #D8D8D8 !important;
+ padding:5px 1px 5px 1px;
+ font-size:1.3em;
+  width:250px;
+  min-width:250px;
+  text-align:center;
+  z-index:10;
+}
+
+.holder {
+ width:250px; 
+ overflow:hidden; 
+ height:287px; 
+ min-height:287px; 
+ border:1px solid #D8D8D8;
+ position: relative;
 }
 
 </style>
@@ -81,24 +108,33 @@ function jkinit()
 function moveim2()
 { imex = -250 - imex;
   document.getElementById('expic2').style.left= imex.toString()+'px';
+  if (imex) $("#bef2").html('AFTER');
+  else $("#bef2").html('BEFORE');
   tot = setTimeout(moveim2,1500);
+
 }  
 
 function moveim3()
 { imex = -250 - imex;
   document.getElementById('expic3').style.left= imex.toString()+'px';
+  if (imex) $("#bef3").html('AFTER');
+  else $("#bef3").html('BEFORE');
   tot = setTimeout(moveim3,1500);
 }  
 
 function moveim4()
 { imex = -250 - imex;
   document.getElementById('expic4').style.left= imex.toString()+'px';
+  if (imex) $("#bef4").html('AFTER');
+  else $("#bef4").html('BEFORE');
   tot = setTimeout(moveim4,1500);
 }  
 
 function moveim5()
 { imex = -250 - imex;
   document.getElementById('expic5').style.left= imex.toString()+'px';
+  if (imex) $("#bef5").html('AFTER');
+  else $("#bef5").html('BEFORE');
   tot = setTimeout(moveim5,1500);
 }  
 
@@ -272,12 +308,12 @@ function dosend()
 </head>
 <body onload="jkinit()">
 
-<div data-role="page" id="intropage" style="background-color:white">
+<div data-role="page" id="intropage" class="mypg">
 
- <div role="main" class="ui-content">
+ <div role="main" class="ui-content myback">
 <div style="padding:0px 10px 0px 10px">
 <center>
-<b style="color:lightskyblue">ADS Magic Smile</b>
+<b class="jhead">ADS Magic Smile</b>
 </center>
 <br><img src="allsmiles.jpg" style="max-width:100%; height:auto"><br>
 <p><i>Did You Know?</i></p>
@@ -295,18 +331,19 @@ function dosend()
 </div>
 
 
-<div data-role="page" id="page2" style="background-color:white">
- <div role="main" class="ui-content">  
+<div data-role="page" id="page2"  class="mypg">
+ <div role="main" class="ui-content myback">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b style="color:lightskyblue">ADS Magic Smile</b>
+   <b class="jhead">ADS Magic Smile</b>
    </center>
-   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>Are <b>you</b> concerned about any of the following?</p>
    <p>1. The colour of your teeth?</p>
    <center>
-   <div name="picholder2" id="picholder2" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
-    <img id="expic2" name="expic2" style="position:absolute; left:0px" src="zfinal3.jpg" width="500">
+   <div name="picholder2" id="picholder2" class="holder">
+    <img id="expic2" name="expic2" style="position:absolute; left:0px" src="zfinal3.jpg" width="500"><br>
    </div>
+    <div class="befaft" id="bef2">BEFORE</div>
    <br>
    <div data-role="controlgroup" data-type="horizontal">
     <a href="#" onclick="javascript:apage2(1);" class="mycol ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
@@ -317,18 +354,19 @@ function dosend()
  </div>
 </div>
 
-<div data-role="page" id="page3" >
+<div data-role="page" id="page3"  class="mypg">
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b style="color:lightskyblue">ADS Magic Smile</b>
+   <b class="jhead">ADS Magic Smile</b>
    </center>
-   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>Are <b>you</b> concerned about any of the following?</p>
    <p>2. The shape of your teeth?</p>
    <center>
-   <div name="picholder3" id="picholder3" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
+   <div name="picholder3" id="picholder3" class="holder">
     <img id="expic3" name="expic3" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
    </div>
+   <div class="befaft" id="bef3">BEFORE</div>
    <br>
    <div data-role="controlgroup" data-type="horizontal">
     <a href="#" onclick="javascript:apage3(1);" class="mycol ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
@@ -340,18 +378,19 @@ function dosend()
  </div>
 </div>
 
-<div data-role="page" id="page4" >
+<div data-role="page" id="page4"  class="mypg">
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b style="color:lightskyblue">ADS Magic Smile</b>
+   <b  class="jhead">ADS Magic Smile</b>
    </center>
-   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>Are <b>you</b> concerned about any of the following?</p>
    <p>3. Do you have gaps between your teeth?</p>
    <center>
-   <div name="picholder4" id="picholder4" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
+   <div name="picholder4" id="picholder4" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
     <img id="expic4" name="expic4" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
    </div>
+   <div class="befaft" id="bef4">BEFORE</div>
    <br>
    <div data-role="controlgroup" data-type="horizontal">
     <a href="#" onclick="javascript:apage4(1);" class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
@@ -363,18 +402,20 @@ function dosend()
  </div>
 </div>
 
-<div data-role="page" id="page5" >
+<div data-role="page" id="page5"  class="mypg">
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b style="color:lightskyblue">ADS Magic Smile</b>
+   <b  class="jhead">ADS Magic Smile</b>
    </center>
-   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>Are <b>you</b> concerned about any of the following?</p>
    <p>4. Do you have skew teeth?</p>
    <center>
-   <div name="picholder5" id="picholder5" style="width:250px; overflow:hidden; height:375px; min-height:375px; position:relative">
+   <div name="picholder5" id="picholder5" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
     <img id="expic5" name="expic5" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
    </div>
+   <div class="befaft" id="bef5">BEFORE</div>
+
    <br>
    <div data-role="controlgroup" data-type="horizontal">
     <a href="#" onclick="javascript:apage5(1);" class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
@@ -387,13 +428,13 @@ function dosend()
 </div>
 
 
-<div data-role="page" id="page6" >
+<div data-role="page" id="page6"  class="mypg">
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b style="color:lightskyblue">ADS Magic Smile</b>
+   <b  class="jhead">ADS Magic Smile</b>
    </center>
-   <p><i>Are <b>you</b> concerned about any of the following?</i></p>
+   <p>Are <b>you</b> concerned about any of the following?</p>
    <label for="comment">5. Any other comments?</label>
    <textarea name="comment" id="comment" rows="3" cols="40"></textarea>
 
@@ -405,11 +446,11 @@ function dosend()
 </div>
 
 
-<div data-role="page" id="page7" >
+<div data-role="page" id="page7" class="mypg">
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b style="color:lightskyblue">ADS Magic Smile</b>
+   <b  class="jhead">ADS Magic Smile</b>
    </center>
    <p>Please fill out your details for a no-obligation smile assessment from your dentist</p>
 
