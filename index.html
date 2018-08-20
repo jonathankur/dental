@@ -139,7 +139,7 @@ fileWriter.onwriteend = function(e) {
 }
 
 function takepic()
-{navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 550, targetHeight: 550, 
+{navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 850, targetHeight: 850, 
     correctOrientation: true, cameraDirection : Camera.Direction.FRONT, destinationType: Camera.DestinationType.DATA_URL
   });
 }
@@ -153,7 +153,6 @@ function onFail(message) {
 }
 
 var win = function (r) {
-     alert(r.response);
      picnum = r.response;
 }
 
