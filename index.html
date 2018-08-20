@@ -251,7 +251,7 @@ function apage5(a)
 }
 
 function dosend()
-{ url='http://brandonkur.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~'+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5);
+{ url='http://brandonkur.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~'+picnum+'~'+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5);
   $.ajax({url: url, 
     success : function(result) {
       var l = result.split('~');
