@@ -75,20 +75,7 @@ function onDeviceReady() {
 
 	});
 
- var notificationOpenedCallback = function(jsonData) {
-    alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-  };
-
- var mypush = document.localStorage.getItem('mypush');
- if (!mypush) mypush='';
- alert('['+mypush+']['+mypush.length+']');
- if (!mypush.length) {
-  window.plugins.OneSignal
-    .startInit("45b78784-af31-424d-8941-addce6905416")
-    .handleNotificationOpened(notificationOpenedCallback)
-    .endInit();
  }
-}
 
 function fail(e) {
 alert('fail');
