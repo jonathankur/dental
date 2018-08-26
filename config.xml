@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
-        id          = "com.tella.push"
+        id          = "au.com.smilesim"
         version     = "1.0.6" >
 
     <!-- versionCode is optional and Android only -->
 
-    <name>ADS Smile</name>
+    <name>SmileSim</name>
 
     <description>
         Mobile Site Photos
@@ -44,4 +44,16 @@
 <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
     <string>need camera access to take pictures</string>
 </edit-config>
+<gap:plugin name="onesignal-cordova-plugin" spec="^2.4.1" source="npm" />
+
+<!-- Requires cli-8.0.0 but we recommend using the latest version. -->
+<preference name="phonegap-version" value="cli-8.0.0" />
+
+<preference name="android-build-tool" value="gradle" />
+<preference name="android-minSdkVersion" value="15" />
+
+<!-- Can omit if not targetting Windows Phone -->
+<preference name="windows-appx-target" value="8.1-phone" />
+<preference name="WindowsToastCapable" value="true" />
+
 </widget>

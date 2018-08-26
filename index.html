@@ -62,6 +62,7 @@ var tot;
 var imex=0;
 var picnum="";
 var ans2, ans3, ans4, ans5;
+var pushcode='';
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -281,6 +282,11 @@ function dosend()
          picnum=l[1];
          window.localStorage.setItem('picnum',picnum);
          jQuery.mobile.changePage("#mypage", {transition: "flip"});
+         pushcode = window.localStorage.getItem('pushcode');
+         if (!pushcode) pushcode='';
+         if (!pushcode.length) {
+           getpushcode();
+         }
       }
       else {
          $("#err").html(l[1]);
@@ -289,6 +295,19 @@ function dosend()
       }
     }
   });
+}
+
+function notificationOpenedCallback(data)
+{ alert(JSON.stringify(data));
+}
+
+function getpushcode()
+{  window.plugins.OneSignal
+    .startInit("47d512d3-9681-4f48-848f-78d7bc9a2cf5")
+    .handleNotificationOpened(notificationOpenedCallback)
+    .endInit();
+
+
 }
 
 </script>
@@ -300,7 +319,7 @@ function dosend()
  <div role="main" class="ui-content myback">
 <div style="padding:0px 10px 0px 10px">
 <center>
-<b class="jhead">ADS Magic Smile</b>
+<b class="jhead">SmileSim</b>
 </center>
 <br><img src="allsmiles.jpg" style="max-width:100%; height:auto"><br>
 <p><i>Did You Know?</i></p>
@@ -322,7 +341,7 @@ function dosend()
  <div role="main" class="ui-content myback">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b class="jhead">ADS Magic Smile</b>
+   <b class="jhead">SmileSim</b>
    </center>
    <p>Are <b>you</b> concerned about any of the following?</p>
    <p>1. The colour of your teeth?</p>
@@ -345,7 +364,7 @@ function dosend()
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b class="jhead">ADS Magic Smile</b>
+   <b class="jhead">SmileSim</b>
    </center>
    <p>Are <b>you</b> concerned about any of the following?</p>
    <p>2. The shape of your teeth?</p>
@@ -369,7 +388,7 @@ function dosend()
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b  class="jhead">ADS Magic Smile</b>
+   <b  class="jhead">SmileSim</b>
    </center>
    <p>Are <b>you</b> concerned about any of the following?</p>
    <p>3. Do you have gaps between your teeth?</p>
@@ -393,7 +412,7 @@ function dosend()
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b  class="jhead">ADS Magic Smile</b>
+   <b  class="jhead">SmileSim</b>
    </center>
    <p>Are <b>you</b> concerned about any of the following?</p>
    <p>4. Do you have skew teeth?</p>
@@ -419,7 +438,7 @@ function dosend()
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b  class="jhead">ADS Magic Smile</b>
+   <b  class="jhead">SmileSim</b>
    </center>
    <p>Are <b>you</b> concerned about any of the following?</p>
    <label for="comment">5. Any other comments?</label>
@@ -437,7 +456,7 @@ function dosend()
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b  class="jhead">ADS Magic Smile</b>
+   <b  class="jhead">SmileSim</b>
    </center>
    <p>Please fill out your details for a no-obligation smile assessment from your dentist</p>
 
