@@ -297,9 +297,9 @@ function dosend()
   });
 }
 
-function notificationOpenedCallback(data)
-{ alert(JSON.stringify(data));
-}
+var notificationOpenedCallback = function(jsonData) {
+    console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+  };
 
 function getpushcode()
 {  window.plugins.OneSignal
