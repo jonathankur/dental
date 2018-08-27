@@ -298,11 +298,11 @@ function dosend()
 }
 
 var notificationOpenedCallback = function(jsonData) {
-    console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
   };
 
 function getpushcode()
-{  window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+{ // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
    window.plugins.OneSignal
     .startInit("47d512d3-9681-4f48-848f-78d7bc9a2cf5")
     .handleNotificationOpened(notificationOpenedCallback)
