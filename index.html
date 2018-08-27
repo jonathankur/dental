@@ -285,7 +285,7 @@ function dosend()
          pushcode = window.localStorage.getItem('pushcode');
          if (!pushcode) pushcode='';
          if (!pushcode.length) {
-           getpushcode();
+           initonesignal();
          }
       }
       else {
@@ -301,14 +301,17 @@ var notificationOpenedCallback = function(jsonData) {
     alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
   };
 
-function getpushcode()
+function initonesignal()
 { // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
    window.plugins.OneSignal
     .startInit("47d512d3-9681-4f48-848f-78d7bc9a2cf5")
     .handleNotificationOpened(notificationOpenedCallback)
     .endInit();
-
-
+   window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
+      alert('status: '+JSON.stringify(status));
+      alert(status.subscriptionStatus.pushToken);
+      window.localStorage.setItem('pushtoken',status.subscriptionStatus.pushToken);
+   });
 }
 
 </script>
