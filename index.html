@@ -12,15 +12,11 @@
 	<script src="jquery.mobile-1.4.5.min.js"></script>
 	<script>
 
-var notificationOpenedCallback = function(jsonData) {
-    alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-  };
 
 function initonesignal()
 { // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
    window.plugins.OneSignal
     .startInit("47d512d3-9681-4f48-848f-78d7bc9a2cf5")
-    .handleNotificationOpened(notificationOpenedCallback)
     .endInit();
    window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
       alert('status: '+JSON.stringify(status));
@@ -33,7 +29,6 @@ function init()
 { // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
    window.plugins.OneSignal
     .startInit("47d512d3-9681-4f48-848f-78d7bc9a2cf5")
-    .handleNotificationOpened(notificationOpenedCallback)
     .endInit();
 }
 
@@ -41,8 +36,8 @@ function getstatus()
 {
    window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
       alert('status: '+JSON.stringify(status));
-      alert(status.subscriptionStatus.pushToken);
-      window.localStorage.setItem('pushtoken',status.subscriptionStatus.pushToken);
+      alert(status.subscriptionStatus.userId);
+      window.localStorage.setItem('pushtoken',status.subscriptionStatus.userId);
    });
 }
 
