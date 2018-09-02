@@ -7,16 +7,305 @@
 	<title>Magic Smile</title>
  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+<style type="text/css">
+.mycol {
+background-color:dodgerblue;
+}
+
+.ui-page-theme-a .ui-btn.ui-btn{
+    background-color: #D8D8D8 !important;
+}
+
+.ui-page-theme-a .ui-btn.ui-btn-active{
+    background-color: #D8D8D8 !important;
+}
+
+.mypg {
+  background-color:#FAFAFA !important;
+}
+
+.jhead {
+  color: #303060 !important;
+}
+
+.befaft {
+ background-color: #D8D8D8 !important;
+ padding:5px 1px 5px 1px;
+ font-size:1.3em;
+  width:250px;
+  min-width:250px;
+  text-align:center;
+  z-index:10;
+}
+
+.holder {
+ width:250px; 
+ overflow:hidden; 
+ height:287px; 
+ min-height:287px; 
+ border:1px solid #D8D8D8;
+ position: relative;
+}
+
+</style>
 	<script src="phonegap.js"></script>
       <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="jquery.mobile-1.4.5.min.js"></script>
 	<script>
 
 
+var logOb;
+var fileURL='';
+var nameFile, fsroot=null;
+var juser=0, jobno=0;
+var tot;
+var imex=0;
+var picnum="";
+var ans2, ans3, ans4, ans5;
+var pushcode='';
+
+document.addEventListener('deviceready', onDeviceReady, false);
+
+function onDeviceReady() {
+	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+          fsroot=dir;
+		dir.getFile("log.jpg", {create:true}, function(file) {
+			logOb = file;
+                fileURL = logOb.toURL();
+		});
+
+	});
+
+ }
+
+function fail(e) {
+alert('fail');
+	console.log("FileSystem Error");
+	console.dir(e);
+}
+
+function errorHandler()
+{ alert('error');
+}
+
+function jkinit()
+{  picnum=window.localStorage.getItem('picnum');
+   if (!picnum) picnum='';
+}
+
+function moveim2()
+{ imex = -250 - imex;
+  document.getElementById('expic2').style.left= imex.toString()+'px';
+  if (imex) $("#bef2").html('AFTER');
+  else $("#bef2").html('BEFORE');
+  tot = setTimeout(moveim2,1500);
+
+}  
+
+function moveim3()
+{ imex = -250 - imex;
+  document.getElementById('expic3').style.left= imex.toString()+'px';
+  if (imex) $("#bef3").html('AFTER');
+  else $("#bef3").html('BEFORE');
+  tot = setTimeout(moveim3,1500);
+}  
+
+function moveim4()
+{ imex = -250 - imex;
+  document.getElementById('expic4').style.left= imex.toString()+'px';
+  if (imex) $("#bef4").html('AFTER');
+  else $("#bef4").html('BEFORE');
+  tot = setTimeout(moveim4,1500);
+}  
+
+function moveim5()
+{ imex = -250 - imex;
+  document.getElementById('expic5').style.left= imex.toString()+'px';
+  if (imex) $("#bef5").html('AFTER');
+  else $("#bef5").html('BEFORE');
+  tot = setTimeout(moveim5,1500);
+}  
+
+function showpic(a)
+{ document.getElementById('expic').src='zfinal'+a.toString()+'.jpg';
+}
+
+function jlogin()
+{ url='http://brandonkur.com.au/dcode.php?dcode='+$("#dcode").val();
+  $.ajax({url: url, 
+    success : function(result) {
+      if (result.length) {
+         window.localStorage.setItem('dcode',result);
+         jQuery.mobile.changePage("#listpage", {transition: "flip"});
+
+      }
+      else {
+         $("#err").show();
+         setTimeout(noshow,2000);
+      }
+    }
+  });
+}
+
+function noshow()
+{ $("#err").hide();
+}
+
+function writeLog(b) {
+    page7();
+    if(!logOb) return;
+    logOb.createWriter(function(fileWriter) {
+fileWriter.onwriteend = function(e) {
+        doupload();
+      };
+		fileWriter.write(b);
+	}, fail);
+}
+
+function takepic()
+{navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 850, targetHeight: 850, 
+    correctOrientation: true, cameraDirection : Camera.Direction.FRONT, destinationType: Camera.DestinationType.DATA_URL
+  });
+}
+
+function onSuccess(imageData) {
+    writeLog(imageData);
+}
+
+function onFail(message) {
+    alert('Failed because: ' + message);
+}
+
+var win = function (r) {
+     picnum = r.response;
+}
+
+var fail = function (error) {
+   alert("An error has occurred: Code = " + error.code);
+}
+
+function doupload()
+{
+ var options = new FileUploadOptions();
+ options.fileKey = "file";
+ options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+ options.mimeType = "application/base64";
+ options.trustAllHosts = true;
+ var params = {};
+ params.value1 = picnum;
+ options.params = params;
+ var ft = new FileTransfer();
+ ft.upload(fileURL, encodeURI("http://brandonkur.com.au/uploadpic.php"), win, fail, options);
+}
+
+function jlogout()
+{ window.localStorage.clear();
+         jQuery.mobile.changePage("#intropage", {transition: "flip"});
+}
+
+
+
+function page2()
+{
+         jQuery.mobile.changePage("#page2", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+         imex=-250;
+         moveim2(); 
+}
+
+function page3()
+{
+         jQuery.mobile.changePage("#page3", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+         imex=-250;
+         moveim3(); 
+
+}
+
+function page4()
+{
+         jQuery.mobile.changePage("#page4", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+         imex=-250;
+         moveim4(); 
+
+}
+
+function page5()
+{
+         jQuery.mobile.changePage("#page5", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+         imex=-250;
+         moveim5(); 
+}
+
+function page6()
+{
+         jQuery.mobile.changePage("#page6", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+}
+
+function page7()
+{ 
+         jQuery.mobile.changePage("#page7", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+}
+
+
+function apage2(a)
+{   ans2=a;
+    page3();
+}
+
+function apage3(a)
+{   ans3=a;
+    page4();
+}
+
+function apage4(a)
+{   ans4=a;
+    page5();
+}
+
+function apage5(a)
+{
+    ans5=a;
+    page6();
+}
+
+function dosend()
+{ url='http://brandonkur.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~'+picnum+'~'+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5);
+  $.ajax({url: url, 
+    success : function(result) {
+      var l = result.split('~');
+      if (l[0]=='1') {
+         picnum=l[1];
+         window.localStorage.setItem('picnum',picnum);
+         jQuery.mobile.changePage("#mypage", {transition: "flip"});
+         pushcode = window.localStorage.getItem('pushcode');
+         if (!pushcode) pushcode='';
+         if (!pushcode.length) {
+           initonesignal();
+         }
+      }
+      else {
+         $("#err").html(l[1]);
+         $("#err").show();
+         setTimeout(noshow,2000);
+      }
+    }
+  });
+}
+
+var notificationOpenedCallback = function(jsonData) {
+    alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+  };
+
 function initonesignal()
 { // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
    window.plugins.OneSignal
     .startInit("47d512d3-9681-4f48-848f-78d7bc9a2cf5")
+    .handleNotificationOpened(notificationOpenedCallback)
     .endInit();
    window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
       alert('status: '+JSON.stringify(status));
@@ -25,62 +314,191 @@ function initonesignal()
    });
 }
 
-function init()
-{ // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
-   window.plugins.OneSignal
-    .startInit("47d512d3-9681-4f48-848f-78d7bc9a2cf5")
-    .endInit();
-}
-
-function getstatus()
-{
-   window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
-      alert('status: '+JSON.stringify(status));
-      alert(status.subscriptionStatus.userId);
-      window.localStorage.setItem('pushtoken',status.subscriptionStatus.userId);
-   });
-}
-
-function showtoken()
-{ var p = window.localStorage.getItem('pushtoken');
-  if (!p) p="";
-  alert(p);
-}
-
-function resettoken()
-{ window.localStorage.removeItem('pushtoken');
-}
-
-function dummytoken()
-{ window.localStorage.setItem('pushtoken','blahblah');
-}
-
 </script>
 </head>
-<body>
+<body onload="jkinit()">
 
 <div data-role="page" id="intropage" class="mypg">
 
  <div role="main" class="ui-content myback">
+<div style="padding:0px 10px 0px 10px">
+<center>
+<b class="jhead">SmileSim</b>
+</center>
+<br><img src="allsmiles.jpg" style="max-width:100%; height:auto"><br>
+<p><i>Did You Know?</i></p>
+<p>Research shows that smiling makes you look younger, thinner and more competent!</p>
+<p>Plus it boosts your mood and may even help you live longer!</p>
+<p>If the shape or colour of your teeth are making you smile less, you're only seconds away from making a real difference to your life</p>
+<br>
 
 
- 
-<input type="button" style="background-color:dodgerblue" value="GET STATUS" onclick="getstatus();">
+<input type="button" style="background-color:dodgerblue" value="SEE MORE" onclick="page2();">
 <br><br>
-<input type="button" style="background-color:dodgerblue" value="INITIALIZE" onclick="init();">
-<br><br>
-<input type="button" style="background-color:dodgerblue" value="SHOW TOKEN" onclick="showtoken();">
-<br><br>
-
-<input type="button" style="background-color:dodgerblue" value="RESET" onclick="resettoken();">
-<br><br>
-<input type="button" style="background-color:dodgerblue" value="DUMMY" onclick="dummytoken();">
-<br><br>
-
-
-
 
 </div>
+</div>
+</div>
+
+
+<div data-role="page" id="page2"  class="mypg">
+ <div role="main" class="ui-content myback">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b class="jhead">SmileSim</b>
+   </center>
+   <p>Are <b>you</b> concerned about any of the following?</p>
+   <p>1. The colour of your teeth?</p>
+   <center>
+   <div name="picholder2" id="picholder2" class="holder">
+    <img id="expic2" name="expic2" style="position:absolute; left:0px" src="zfinal3.jpg" width="500"><br>
+   </div>
+    <div class="befaft" id="bef2">BEFORE</div>
+   <br>
+   <div data-role="controlgroup" data-type="horizontal">
+    <a href="#" onclick="javascript:apage2(1);" class="mycol ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
+    <a href="#" onclick="javascript:apage2(0);" class="mycol ui-btn ui-corner-all ui-icon-delete ui-btn-icon-right">No</a>
+   </div> 
+  </center>
+  </div>
+ </div>
+</div>
+
+<div data-role="page" id="page3"  class="mypg">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b class="jhead">SmileSim</b>
+   </center>
+   <p>Are <b>you</b> concerned about any of the following?</p>
+   <p>2. The shape of your teeth?</p>
+   <center>
+   <div name="picholder3" id="picholder3" class="holder">
+    <img id="expic3" name="expic3" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
+   </div>
+   <div class="befaft" id="bef3">BEFORE</div>
+   <br>
+   <div data-role="controlgroup" data-type="horizontal">
+    <a href="#" onclick="javascript:apage3(1);" class="mycol ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
+    <a href="#" onclick="javascript:apage3(0);" class="mycol ui-btn ui-corner-all ui-icon-delete ui-btn-icon-right">No</a>
+    <a href="#" onclick="javascript:page2();" class="mycol ui-btn ui-corner-all ui-icon-back ui-btn-icon-right">Go Back</a>
+   </div> 
+   </center>
+  </div>
+ </div>
+</div>
+
+<div data-role="page" id="page4"  class="mypg">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b  class="jhead">SmileSim</b>
+   </center>
+   <p>Are <b>you</b> concerned about any of the following?</p>
+   <p>3. Do you have gaps between your teeth?</p>
+   <center>
+   <div name="picholder4" id="picholder4" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
+    <img id="expic4" name="expic4" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
+   </div>
+   <div class="befaft" id="bef4">BEFORE</div>
+   <br>
+   <div data-role="controlgroup" data-type="horizontal">
+    <a href="#" onclick="javascript:apage4(1);" class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
+    <a href="#" onclick="javascript:apage4(0);" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-right">No</a>
+    <a href="#" onclick="javascript:page3();" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-right">Go Back</a>
+   </div> 
+   </center>
+  </div>
+ </div>
+</div>
+
+<div data-role="page" id="page5"  class="mypg">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b  class="jhead">SmileSim</b>
+   </center>
+   <p>Are <b>you</b> concerned about any of the following?</p>
+   <p>4. Do you have skew teeth?</p>
+   <center>
+   <div name="picholder5" id="picholder5" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
+    <img id="expic5" name="expic5" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
+   </div>
+   <div class="befaft" id="bef5">BEFORE</div>
+
+   <br>
+   <div data-role="controlgroup" data-type="horizontal">
+    <a href="#" onclick="javascript:apage5(1);" class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-left">Yes</a>
+    <a href="#" onclick="javascript:apage5(0);" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-right">No</a>
+    <a href="#" onclick="javascript:page4();" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-right">Go Back</a>
+   </div> 
+   </center>
+  </div>
+ </div>
+</div>
+
+
+<div data-role="page" id="page6"  class="mypg">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b  class="jhead">SmileSim</b>
+   </center>
+   <p>Are <b>you</b> concerned about any of the following?</p>
+   <label for="comment">5. Any other comments?</label>
+   <textarea name="comment" id="comment" rows="3" cols="40"></textarea>
+
+   <p style="font-size:1.3em; color:dodgerblue"><b>Are you curious to see how you could look?</b></p>
+   <p>Take a selfie of your smiling face with your teeth slightly apart and receive a free smile simulation showing how great you could look</p>
+   <a href="#" class="ui-btn ui-icon-camera ui-btn-icon-bottom" onclick="takepic()">Take Picture</a>
+  </div>
+ </div>
+</div>
+
+
+<div data-role="page" id="page7" class="mypg">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b  class="jhead">SmileSim</b>
+   </center>
+   <p>Please fill out your details for a no-obligation smile assessment from your dentist</p>
+
+   <label for="name">Your Name</label>
+   <input type="text" name="name" id="name">
+   <br>
+   <label for="email">Email Address</label>
+   <input type="text" name="email" id="email">
+   <br>
+   <label for="phone">Phone Number</label>
+   <input type="text" name="phone" id="phone">
+   <br>
+   <label for="phone">Dentist Code</label>
+   <input type="text" name="dcode" id="dcode">
+   <a href="#dpop" data-rel="popup" data-transition="pop" data-position-to="window"><small>Don't have a Dentist Code?</small></a>   
+   <div data-role="popup" id="dpop">
+   <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+   <div style="padding:0px 10px 0px 10px">
+   <p>Please ask your dentist for their ADS Magic Code</p>
+   <p>If they don't already have one, ask them to register on our site at :-</p>
+   <p style="color:dodgerblue"><b>http://adsmagic.com.au</b></p>
+   <br><br>
+   </div>  
+   </div>
+   <br><div id="err" style="display:none; color:red; font-weight:bold"></div><br>
+   <a href="#" class="ui-btn" onclick="dosend()">Send</a>
+  </div>
+ </div>
+</div>
+
+<div data-role="page" id="mypage" >
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+ <p>Success</p>
+  
+   <a href="#" class="ui-btn" onclick="page2()">Start Again</a>
+  </div>
+ </div>
 </div>
 
 </body>
