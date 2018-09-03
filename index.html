@@ -270,7 +270,7 @@ function apage4(a)
 function apage5(a)
 {
     ans5=a;
-    page6();
+    page6();   // ** CHANGE BACK TO 6
 }
 
 function dosend()
@@ -312,6 +312,35 @@ function initonesignal()
       alert(status.subscriptionStatus.pushToken);
       window.localStorage.setItem('pushtoken',status.subscriptionStatus.pushToken);
    });
+}
+
+function golook()
+{ $("#lp2").hide();
+  $("#lp1").show();
+  $("#lp2").html('<center><img src="tenor.gif" style="max-width:100%"></center>');
+  $("#lp2").trigger('create');
+  jQuery.mobile.changePage("#findone", {transition: "flip"});
+} 
+
+function plook()
+{ $("#lp1").hide();
+  $("#lp2").show();
+  url='http://brandonkur.com.au/find.php?pcd='+encodeURIComponent($("#pcd").val());
+  $.ajax({url: url, 
+    success : function(result) {
+       $("#lp2").html(result);
+       $("#lp2").trigger('create');
+    }
+  });
+}
+
+function stoplook()
+{ jQuery.mobile.changePage("#page7", {transition: "flip"});
+} 
+
+function inscode(a)
+{ $("#dcode").val(a);
+  jQuery.mobile.changePage("#page7", {transition: "flip"});
 }
 
 </script>
@@ -475,18 +504,31 @@ function initonesignal()
    <br>
    <label for="phone">Dentist Code</label>
    <input type="text" name="dcode" id="dcode">
-   <a href="#dpop" data-rel="popup" data-transition="pop" data-position-to="window"><small>Don't have a Dentist Code?</small></a>   
-   <div data-role="popup" id="dpop">
-   <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-   <div style="padding:0px 10px 0px 10px">
-   <p>Please ask your dentist for their ADS Magic Code</p>
-   <p>If they don't already have one, ask them to register on our site at :-</p>
-   <p style="color:dodgerblue"><b>http://adsmagic.com.au</b></p>
-   <br><br>
-   </div>  
-   </div>
+   <a href="#" onclick="javascript:golook()"><small>Don't have a Dentist Code?</small></a>   
    <br><div id="err" style="display:none; color:red; font-weight:bold"></div><br>
    <a href="#" class="ui-btn" onclick="dosend()">Send</a>
+  </div>
+ </div>
+</div>
+
+
+<div data-role="page" id="findone" class="mypg">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b  class="jhead">SmileSim</b>
+   </center>
+   <div name="lp1" id="lp1">
+    <p>Ask your dentist for their <b>SmileSim</b> Code, or suggest that they register with us at :-<br><span style="color:dodgerblue">http://smilesim.com.au</span></p>
+    <p>Alternatively, search for a participating dentist in your area by entering your Postcode below</p><br>
+    <input type="text" name="pcd" id="pcd" placeholder="Your Postcode"><br>
+    <a href="#" class="ui-btn" onclick="plook()">Look-Up</a>
+   </div>
+   <div  name="lp2" id="lp2">
+   </div>
+  </div>
+  <div data-role="footer" onclick="stoplook()" data-fullscreen="true" data-position="fixed">
+   <h4>Go Back</h4>
   </div>
  </div>
 </div>
