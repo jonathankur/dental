@@ -281,12 +281,8 @@ function dosend()
       if (l[0]=='1') {
          picnum=l[1];
          window.localStorage.setItem('picnum',picnum);
-         jQuery.mobile.changePage("#mypage", {transition: "flip"});
-         pushcode = window.localStorage.getItem('pushcode');
-         if (!pushcode) pushcode='';
-         if (!pushcode.length) {
-           initonesignal();
-         }
+         initonesignal();
+         showmine();
       }
       else {
          $("#err").html(l[1]);
@@ -297,8 +293,17 @@ function dosend()
   });
 }
 
+  var notificationOpenedCallback = function(jsonData) {
+    alert('notification: ' + JSON.stringify(jsonData));
+  };
+
 function initonesignal()
 {
+  window.plugins.OneSignal
+    .startInit("47d512d3-9681-4f48-848f-78d7bc9a2cf5")
+    .handleNotificationOpened(notificationOpenedCallback)
+    .inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.Notification)
+    .endInit();
 }
 
 function golook()
@@ -320,6 +325,22 @@ function plook()
     }
   });
 }
+
+function showmine()
+{ window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
+      alert(JSON.stringify(status));
+  }); 
+
+  url='http://brandonkur.com.au/showmine.php?picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+  $.ajax({url: url, 
+    success : function(result) {
+       $("#mydets").html(result);
+       $("#mydets").trigger('create');
+       jQuery.mobile.changePage("#mypage", {transition: "flip"});
+    }
+  });
+}
+
 
 function stoplook()
 { jQuery.mobile.changePage("#page7", {transition: "flip"});
@@ -522,10 +543,11 @@ function inscode(a)
 
 <div data-role="page" id="mypage" >
  <div role="main" class="ui-content">  
-  <div style="padding:0px 10px 0px 10px">
- <p>Success</p>
+  <div style="padding:0px 10px 0px 10px" name="mydets" id="mydets">
   
-   <a href="#" class="ui-btn" onclick="page2()">Start Again</a>
+  </div>
+  <div data-role="footer" onclick="page2()" data-fullscreen="true" data-position="fixed">
+   <h4>Do It Again</h4>
   </div>
  </div>
 </div>
