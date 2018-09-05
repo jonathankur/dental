@@ -342,7 +342,7 @@ function getonestatus()
 }
 
 function savePush(s)
-{ url='http://brandonkur.com.au/savepush.php?id='+s+&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+{ url='http://brandonkur.com.au/savepush.php?id='+s+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
   $.ajax({url: url, 
     success : function(result) {
     }
