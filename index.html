@@ -63,6 +63,7 @@ var imex=0;
 var picnum="";
 var ans2, ans3, ans4, ans5;
 var pushcode='';
+var keeptrying=6;
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -91,6 +92,8 @@ function errorHandler()
 function jkinit()
 {  picnum=window.localStorage.getItem('picnum');
    if (!picnum) picnum='';
+   if (picnum.length) 
+       showmine();
 }
 
 function moveim2()
@@ -326,11 +329,19 @@ function plook()
   });
 }
 
-function showmine()
-{ window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
+function getonestatus()
+{
+  window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
       alert(JSON.stringify(status));
+      if (--keeptrying>0)
+         setTimeout(getonestatus(),2000);
   }); 
 
+}
+
+function showmine()
+{ keeptrying = 6;
+  getonestatus();
   url='http://brandonkur.com.au/showmine.php?picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
   $.ajax({url: url, 
     success : function(result) {
@@ -384,8 +395,7 @@ function inscode(a)
    <center>
    <b class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about any of the following?</p>
-   <p>1. The colour of your teeth?</p>
+   <p>Are <b>you</b> concerned about the colour of your teeth?</p>
    <center>
    <div name="picholder2" id="picholder2" class="holder">
     <img id="expic2" name="expic2" style="position:absolute; left:0px" src="zfinal3.jpg" width="500"><br>
@@ -407,8 +417,7 @@ function inscode(a)
    <center>
    <b class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about any of the following?</p>
-   <p>2. The shape of your teeth?</p>
+   <p>Are <b>you</b> concerned about the shape of your teeth?</p>
    <center>
    <div name="picholder3" id="picholder3" class="holder">
     <img id="expic3" name="expic3" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
@@ -431,8 +440,7 @@ function inscode(a)
    <center>
    <b  class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about any of the following?</p>
-   <p>3. Do you have gaps between your teeth?</p>
+   <p>Are <b>you</b> concerned about gaps between your teeth?</p>
    <center>
    <div name="picholder4" id="picholder4" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
     <img id="expic4" name="expic4" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
@@ -455,8 +463,7 @@ function inscode(a)
    <center>
    <b  class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about any of the following?</p>
-   <p>4. Do you have skew teeth?</p>
+   <p>Are <b>you</b> concerned about having skew teeth?</p>
    <center>
    <div name="picholder5" id="picholder5" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
     <img id="expic5" name="expic5" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
@@ -481,7 +488,7 @@ function inscode(a)
    <center>
    <b  class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about any of the following?</p>
+ 
    <label for="comment">5. Any other comments?</label>
    <textarea name="comment" id="comment" rows="3" cols="40"></textarea>
 
