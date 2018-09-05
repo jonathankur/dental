@@ -92,8 +92,10 @@ function errorHandler()
 function jkinit()
 {  picnum=window.localStorage.getItem('picnum');
    if (!picnum) picnum='';
-   if (picnum.length) 
+   if (picnum.length) {
+       initonesignal(); 
        showmine();
+   }
 }
 
 function moveim2()
@@ -332,9 +334,7 @@ function plook()
 function getonestatus()
 {
   window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
-alert(JSON.stringify(status));
       var ss = status.subscriptionStatus.userId;
-alert('ss=['+ss+']');
      if ((ss!=null) && (ss.length>0)) savePush(ss);
       else {
        if (--keeptrying>0)
@@ -345,7 +345,6 @@ alert('ss=['+ss+']');
 
 function savePush(s)
 { url='http://brandonkur.com.au/savepush.php?id='+s+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
-alert(url);
   $.ajax({url: url, 
     success : function(result) {
     }
