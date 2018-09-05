@@ -297,7 +297,7 @@ function dosend()
 }
 
   var notificationOpenedCallback = function(jsonData) {
-    alert('notification: ' + JSON.stringify(jsonData));
+    showmine();
   };
 
 function initonesignal()
@@ -332,11 +332,21 @@ function plook()
 function getonestatus()
 {
   window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
-      alert(JSON.stringify(status));
-      if (--keeptrying>0)
+      var ss = status.subscriptionStatus.userId;
+      if (ss.length) savePush(ss);
+      else {
+       if (--keeptrying>0)
          setTimeout(getonestatus(),2000);
+      }
   }); 
+}
 
+function savePush(s)
+{ url='http://brandonkur.com.au/savepush.php?id='+s+&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+  $.ajax({url: url, 
+    success : function(result) {
+    }
+  });
 }
 
 function showmine()
