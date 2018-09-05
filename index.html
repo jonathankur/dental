@@ -332,7 +332,10 @@ function plook()
 function getonestatus()
 {
   window.plugins.OneSignal.getPermissionSubscriptionState(function(status) {
+alert(JSON.stringify(status));
       var ss = status.subscriptionStatus.userId;
+alert('ss=['+ss+']');
+
       if (ss.length) savePush(ss);
       else {
        if (--keeptrying>0)
@@ -343,6 +346,7 @@ function getonestatus()
 
 function savePush(s)
 { url='http://brandonkur.com.au/savepush.php?id='+s+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+alert(url);
   $.ajax({url: url, 
     success : function(result) {
     }
