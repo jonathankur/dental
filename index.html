@@ -81,7 +81,7 @@ function onDeviceReady() {
 
 var fbLoginSuccess = function (userData) {
   url='http://smilesim.com.au/facebook.php?user='+userData.authResponse.userID+'&access='+userData.authResponse.accessToken;
-  alert(url);
+ 
   $.ajax({url: url, 
     success : function(result) {
        var j = result.split('~');
@@ -206,7 +206,7 @@ function doupload()
  options.mimeType = "application/base64";
  options.trustAllHosts = true;
  var params = {};
- params.value1 = picnum;
+ params.value1 = $("#dcode").val()+"~"+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5;
  options.params = params;
  var ft = new FileTransfer();
  ft.upload(fileURL, encodeURI("http://smilesim.com.au/uploadpic.php"), win, fail, options);
@@ -288,7 +288,7 @@ function apage5(a)
 }
 
 function dosend()
-{ url='http://smilesim.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~'+picnum+'~'+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5);
+{ url='http://smilesim.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~';
   $.ajax({url: url, 
     success : function(result) {
       var l = result.split('~');
