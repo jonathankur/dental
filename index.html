@@ -79,6 +79,29 @@ function onDeviceReady() {
 
  }
 
+var fbLoginSuccess = function (userData) {
+  url='http://smilesim.com.au/facebook.php?user='+userData.authResponse.userID+'&access='+userData.authResponse.accessToken;
+  alert(url);
+  $.ajax({url: url, 
+    success : function(result) {
+       var j = result.split('~');
+       $("#name").val(j[0]);
+       $("#email").val(j[1]);
+       $("#phone").val(j[2]);
+    }
+  });
+
+}
+
+function dofblogin()
+{
+facebookConnectPlugin.login(["public_profile", "email"], fbLoginSuccess,
+  function (error) {
+    alert("ERROR: "+JSON.stringify(error))
+  }
+);
+}
+
 function fail(e) {
 alert('fail');
 	console.log("FileSystem Error");
@@ -135,29 +158,12 @@ function showpic(a)
 { document.getElementById('expic').src='zfinal'+a.toString()+'.jpg';
 }
 
-function jlogin()
-{ url='http://brandonkur.com.au/dcode.php?dcode='+$("#dcode").val();
-  $.ajax({url: url, 
-    success : function(result) {
-      if (result.length) {
-         window.localStorage.setItem('dcode',result);
-         jQuery.mobile.changePage("#listpage", {transition: "flip"});
-
-      }
-      else {
-         $("#err").show();
-         setTimeout(noshow,2000);
-      }
-    }
-  });
-}
-
 function noshow()
 { $("#err").hide();
 }
 
 function writeLog(b) {
-    page7();
+ 
     if(!logOb) return;
     logOb.createWriter(function(fileWriter) {
 fileWriter.onwriteend = function(e) {
@@ -183,6 +189,9 @@ function onFail(message) {
 
 var win = function (r) {
      picnum = r.response;
+     window.localStorage.setItem('picnum',picnum);
+     initonesignal();
+     showmine();
 }
 
 var fail = function (error) {
@@ -200,7 +209,7 @@ function doupload()
  params.value1 = picnum;
  options.params = params;
  var ft = new FileTransfer();
- ft.upload(fileURL, encodeURI("http://brandonkur.com.au/uploadpic.php"), win, fail, options);
+ ft.upload(fileURL, encodeURI("http://smilesim.com.au/uploadpic.php"), win, fail, options);
 }
 
 function jlogout()
@@ -279,15 +288,12 @@ function apage5(a)
 }
 
 function dosend()
-{ url='http://brandonkur.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~'+picnum+'~'+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5);
+{ url='http://smilesim.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~'+picnum+'~'+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5);
   $.ajax({url: url, 
     success : function(result) {
       var l = result.split('~');
       if (l[0]=='1') {
-         picnum=l[1];
-         window.localStorage.setItem('picnum',picnum);
-         initonesignal();
-         showmine();
+        page7(); 
       }
       else {
          $("#err").html(l[1]);
@@ -322,7 +328,7 @@ function golook()
 function plook()
 { $("#lp1").hide();
   $("#lp2").show();
-  url='http://brandonkur.com.au/find.php?pcd='+encodeURIComponent($("#pcd").val());
+  url='http://smilesim.com.au/find.php?pcd='+encodeURIComponent($("#pcd").val());
   $.ajax({url: url, 
     success : function(result) {
        $("#lp2").html(result);
@@ -344,7 +350,7 @@ function getonestatus()
 }
 
 function savePush(s)
-{ url='http://brandonkur.com.au/savepush.php?id='+s+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+{ url='http://smilesim.com.au/savepush.php?id='+s+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
   $.ajax({url: url, 
     success : function(result) {
     }
@@ -354,7 +360,7 @@ function savePush(s)
 function showmine()
 { keeptrying = 6;
   getonestatus();
-  url='http://brandonkur.com.au/showmine.php?picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+  url='http://smilesim.com.au/showmine.php?picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
   $.ajax({url: url, 
     success : function(result) {
        $("#mydets").html(result);
@@ -366,12 +372,12 @@ function showmine()
 
 
 function stoplook()
-{ jQuery.mobile.changePage("#page7", {transition: "flip"});
+{ jQuery.mobile.changePage("#page6", {transition: "flip"});
 } 
 
 function inscode(a)
 { $("#dcode").val(a);
-  jQuery.mobile.changePage("#page7", {transition: "flip"});
+  jQuery.mobile.changePage("#page6", {transition: "flip"});
 }
 
 </script>
@@ -407,7 +413,7 @@ function inscode(a)
    <center>
    <b class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about the colour of your teeth?</p>
+   <p>Are <b>you</b> interested in whitening the colour of your teeth?</p>
    <center>
    <div name="picholder2" id="picholder2" class="holder">
     <img id="expic2" name="expic2" style="position:absolute; left:0px" src="zfinal3.jpg" width="500"><br>
@@ -429,7 +435,7 @@ function inscode(a)
    <center>
    <b class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about the shape of your teeth?</p>
+   <p>Are <b>you</b> interested in correcting the shape of your teeth?</p>
    <center>
    <div name="picholder3" id="picholder3" class="holder">
     <img id="expic3" name="expic3" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
@@ -452,7 +458,7 @@ function inscode(a)
    <center>
    <b  class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about gaps between your teeth?</p>
+   <p>Are <b>you</b> interested in removing gaps between your teeth?</p>
    <center>
    <div name="picholder4" id="picholder4" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
     <img id="expic4" name="expic4" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
@@ -475,7 +481,7 @@ function inscode(a)
    <center>
    <b  class="jhead">SmileSim</b>
    </center>
-   <p>Are <b>you</b> concerned about having skew teeth?</p>
+   <p>Are <b>you</b> interested in straightening skew teeth?</p>
    <center>
    <div name="picholder5" id="picholder5" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
     <img id="expic5" name="expic5" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
@@ -500,25 +506,17 @@ function inscode(a)
    <center>
    <b  class="jhead">SmileSim</b>
    </center>
- 
-   <label for="comment">5. Any other comments?</label>
+   <br><br>
+   <label for="comment">Any other comments?</label>
    <textarea name="comment" id="comment" rows="3" cols="40"></textarea>
 
    <p style="font-size:1.3em; color:dodgerblue"><b>Are you curious to see how you could look?</b></p>
-   <p>Take a selfie of your smiling face with your teeth slightly apart and receive a free smile simulation showing how great you could look</p>
-   <a href="#" class="ui-btn ui-icon-camera ui-btn-icon-bottom" onclick="takepic()">Take Picture</a>
-  </div>
- </div>
-</div>
 
+   <p>For a FREE no-obligation smile evaluation, take a selfie and tell us where to send the results</p>
 
-<div data-role="page" id="page7" class="mypg">
- <div role="main" class="ui-content">  
-  <div style="padding:0px 10px 0px 10px">
-   <center>
-   <b  class="jhead">SmileSim</b>
-   </center>
-   <p>Please fill out your details for a no-obligation smile assessment from your dentist</p>
+<center>
+   <p><img src="facebook.png" onclick="dofblogin()" style="max-width:80%"></p> 
+</center>
 
    <label for="name">Your Name</label>
    <input type="text" name="name" id="name">
@@ -533,11 +531,34 @@ function inscode(a)
    <input type="text" name="dcode" id="dcode">
    <a href="#" onclick="javascript:golook()"><small>Don't have a Dentist Code?</small></a>   
    <br><div id="err" style="display:none; color:red; font-weight:bold"></div><br>
-   <a href="#" class="ui-btn" onclick="dosend()">Send</a>
+   <a href="#" class="ui-btn" onclick="dosend()">Continue</a>
+
   </div>
  </div>
 </div>
 
+
+<div data-role="page" id="page7" class="mypg">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b  class="jhead">SmileSim</b>
+   </center>
+   <br><br><p>Great, now please take a photo in which your smiling face takes up most of the screen</p>
+   <p>Your teeth should be showing in the photo and be slightly apart so that we can see the edges</p>
+ 
+   <br><br>
+    
+ 
+   <a href="#" class="ui-btn ui-icon-camera ui-btn-icon-bottom" onclick="takepic()">Take Picture</a>
+  <br><br>
+  <p>Here's an example of what we want</p>
+  <center>
+  <img src="example.jpg" style="max-width:80%">
+  </center>
+  </div>
+ </div>
+</div>
 
 <div data-role="page" id="findone" class="mypg">
  <div role="main" class="ui-content">  

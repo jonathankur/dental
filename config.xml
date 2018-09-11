@@ -51,7 +51,7 @@
 <plugin name="onesignal-cordova-plugin" spec="^2.2.5" source="npm" />
 <plugin name="cordova-plugin-splashscreen" source="npm" />
 <access origin="http://code.jquery.com" subdomains="true" />
-<access origin="http://brandonkur.com.au" subdomains="true" />
+<access origin="http://smilesim.com.au" subdomains="true" />
 <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
     <string>need camera access to take pictures</string>
 </edit-config>
