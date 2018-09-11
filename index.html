@@ -288,7 +288,7 @@ function apage5(a)
 }
 
 function dosend()
-{ url='http://smilesim.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~';
+{ url='http://smilesim.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~');
   $.ajax({url: url, 
     success : function(result) {
       var l = result.split('~');
