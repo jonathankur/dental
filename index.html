@@ -45,6 +45,7 @@ background-color:dodgerblue;
  min-height:287px; 
  border:1px solid #D8D8D8;
  position: relative;
+ margin-top:10px;
 }
 
 </style>
@@ -54,9 +55,6 @@ background-color:dodgerblue;
 	<script>
 
 
-var logOb;
-var fileURL='';
-var nameFile, fsroot=null;
 var juser=0, jobno=0;
 var tot;
 var imex=0;
@@ -64,20 +62,6 @@ var picnum="";
 var ans2, ans3, ans4, ans5;
 var pushcode='';
 var keeptrying=6;
-
-document.addEventListener('deviceready', onDeviceReady, false);
-
-function onDeviceReady() {
-	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
-          fsroot=dir;
-		dir.getFile("log.jpg", {create:true}, function(file) {
-			logOb = file;
-                fileURL = logOb.toURL();
-		});
-
-	});
-
- }
 
 var fbLoginSuccess = function (userData) {
   url='http://smilesim.com.au/facebook.php?user='+userData.authResponse.userID+'&access='+userData.authResponse.accessToken;
@@ -174,50 +158,45 @@ fileWriter.onwriteend = function(e) {
 }
 
 function takepic()
-{navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 850, targetHeight: 850, 
-    correctOrientation: true, cameraDirection : Camera.Direction.FRONT, destinationType: Camera.DestinationType.DATA_URL
+{navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 1250, correctOrientation: true, cameraDirection : Camera.Direction.FRONT, destinationType: Camera.DestinationType.DATA_URL
   });
 }
 
-function onSuccess(imageData) {
-    writeLog(imageData);
+function onSuccess(imageData) 
+{ var url='http://smilesim.com.au/uppic.php';
+  var data = {
+     dcode : $("#dcode").val(),
+     name : $("#name").val(),
+     email : $("#email").val(),
+     phone: $("#phone").val(),
+     comment : $("#comment").val(),
+     ans2 : ans2,
+     ans3 : ans3,
+     ans4 : ans4,
+     ans5 : ans5,
+     pic : imageData
+  };
+  $.post(url,data)
+  .done(function(result) {
+     picnum = result;
+     window.localStorage.setItem('picnum',picnum);
+     initonesignal();
+     showmine();
+  });
 }
 
 function onFail(message) {
     alert('Failed because: ' + message);
 }
 
-var win = function (r) {
-     picnum = r.response;
-     window.localStorage.setItem('picnum',picnum);
-     initonesignal();
-     showmine();
-}
-
 var fail = function (error) {
    alert("An error has occurred: Code = " + error.code);
-}
-
-function doupload()
-{
- var options = new FileUploadOptions();
- options.fileKey = "file";
- options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
- options.mimeType = "application/base64";
- options.trustAllHosts = true;
- var params = {};
- params.value1 = $("#dcode").val()+"~"+$("#name").val()+'~'+$("#email").val()+'~'+$("#phone").val()+'~'+$("#comment").val()+'~'+ans2+'~'+ans3+'~'+ans4+'~'+ans5;
- options.params = params;
- var ft = new FileTransfer();
- ft.upload(fileURL, encodeURI("http://smilesim.com.au/uploadpic.php"), win, fail, options);
 }
 
 function jlogout()
 { window.localStorage.clear();
          jQuery.mobile.changePage("#intropage", {transition: "flip"});
 }
-
-
 
 function page2()
 {
@@ -411,18 +390,18 @@ function inscode(a)
  <div role="main" class="ui-content myback">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b class="jhead">SmileSim</b>
-   </center>
-   <p>Are <b>you</b> concerned about the colour of your teeth?</p>
-   <center>
+   <b class="jhead">WHITENING</b>
    <div name="picholder2" id="picholder2" class="holder">
     <img id="expic2" name="expic2" style="position:absolute; left:0px" src="zfinal3.jpg" width="500"><br>
    </div>
     <div class="befaft" id="bef2">BEFORE</div>
    <br>
-   <div data-role="controlgroup" data-type="horizontal">
-    <a href="#" onclick="javascript:apage2(1);" class="mycol ui-btn ui-corner-all ui-icon-check ui-btn-icon-bottom">Yes</a>
-    <a href="#" onclick="javascript:apage2(0);" class="mycol ui-btn ui-corner-all ui-icon-delete ui-btn-icon-bottom">No</a>
+   <p>Are you happy with the colour of your teeth?</p>
+
+   <div class="ui-grid-b">
+    <div class="ui-block-a" onclick="javascript:apage2(2);" style="text-align:center"><img src="sad.png" style="width:50%; max-width:50%"><br>NO</div>
+    <div class="ui-block-b" onclick="javascript:apage2(1);" style="text-align:center"><img src="mid.png" style="width:50%; max-width:50%"><br>MAYBE</div>
+    <div class="ui-block-c" onclick="javascript:apage2(0);" style="text-align:center"><img src="happy.png" style="width:50%; max-width:50%"><br>YES</div>
    </div> 
   </center>
   </div>
@@ -433,21 +412,20 @@ function inscode(a)
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b class="jhead">SmileSim</b>
-   </center>
-   <p>Are <b>you</b> concerned about the shape of your teeth?</p>
-   <center>
+   <b class="jhead">VENEERS</b>
    <div name="picholder3" id="picholder3" class="holder">
     <img id="expic3" name="expic3" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
    </div>
    <div class="befaft" id="bef3">BEFORE</div>
    <br>
-   <div data-role="controlgroup" data-type="horizontal">
-    <a href="#" onclick="javascript:apage3(1);" class="mycol ui-btn ui-corner-all ui-icon-check ui-btn-icon-bottom">Yes</a>
-    <a href="#" onclick="javascript:apage3(0);" class="mycol ui-btn ui-corner-all ui-icon-delete ui-btn-icon-bottom">No</a>
-    <a href="#" onclick="javascript:page2();" class="mycol ui-btn ui-corner-all ui-icon-back ui-btn-icon-bottom">Go Back</a>
+   <p>Are you happy with the shape of your teeth?</p>
+
+   <div class="ui-grid-b">
+    <div class="ui-block-a" onclick="javascript:apage3(2);" style="text-align:center"><img src="sad.png" style="width:50%; max-width:50%"><br>NO</div>
+    <div class="ui-block-b" onclick="javascript:apage3(1);" style="text-align:center"><img src="mid.png" style="width:50%; max-width:50%"><br>MAYBE</div>
+    <div class="ui-block-c" onclick="javascript:apage3(0);" style="text-align:center"><img src="happy.png" style="width:50%; max-width:50%"><br>YES</div>
    </div> 
-   </center>
+  </center>
   </div>
  </div>
 </div>
@@ -456,19 +434,19 @@ function inscode(a)
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b  class="jhead">SmileSim</b>
-   </center>
-   <p>Are <b>you</b> concerned about gaps in your teeth?</p>
-   <center>
+   <b  class="jhead">ORTHODONTICS</b>
    <div name="picholder4" id="picholder4" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
     <img id="expic4" name="expic4" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
    </div>
    <div class="befaft" id="bef4">BEFORE</div>
    <br>
-   <div data-role="controlgroup" data-type="horizontal">
-    <a href="#" onclick="javascript:apage4(1);" class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-bottom">Yes</a>
-    <a href="#" onclick="javascript:apage4(0);" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-bottom">No</a>
-    <a href="#" onclick="javascript:page3();" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-bottom">Go Back</a>
+
+   <p>Are you concerned about any skew teeth?</p>
+
+   <div class="ui-grid-b">
+    <div class="ui-block-a" onclick="javascript:apage4(2);" style="text-align:center"><img src="sad.png" style="width:50%; max-width:50%"><br>YES</div>
+    <div class="ui-block-b" onclick="javascript:apage4(1);" style="text-align:center"><img src="mid.png" style="width:50%; max-width:50%"><br>MAYBE</div>
+    <div class="ui-block-c" onclick="javascript:apage4(0);" style="text-align:center"><img src="happy.png" style="width:50%; max-width:50%"><br>NO</div>
    </div> 
    </center>
   </div>
@@ -479,20 +457,20 @@ function inscode(a)
  <div role="main" class="ui-content">  
   <div style="padding:0px 10px 0px 10px">
    <center>
-   <b  class="jhead">SmileSim</b>
-   </center>
-   <p>Are <b>you</b> concerned about skew teeth?</p>
-   <center>
+   <b  class="jhead">COSMETICS</b>
    <div name="picholder5" id="picholder5" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
     <img id="expic5" name="expic5" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
    </div>
    <div class="befaft" id="bef5">BEFORE</div>
 
    <br>
-   <div data-role="controlgroup" data-type="horizontal">
-    <a href="#" onclick="javascript:apage5(1);" class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-bottom">Yes</a>
-    <a href="#" onclick="javascript:apage5(0);" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-bottom">No</a>
-    <a href="#" onclick="javascript:page4();" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-bottom">Go Back</a>
+   <p>Are you concerned about gaps in your teeth?</p>
+
+   <div class="ui-grid-b">
+    <div class="ui-block-a" onclick="javascript:apage5(2);" style="text-align:center"><img src="sad.png" style="width:50%; max-width:50%"><br>YES</div>
+    <div class="ui-block-b" onclick="javascript:apage5(1);" style="text-align:center"><img src="mid.png" style="width:50%; max-width:50%"><br>MAYBE</div>
+    <div class="ui-block-c" onclick="javascript:apage5(0);" style="text-align:center"><img src="happy.png" style="width:50%; max-width:50%"><br>NO</div>
+
    </div> 
    </center>
   </div>
@@ -515,7 +493,7 @@ function inscode(a)
    <p>For a FREE no-obligation smile evaluation, take a selfie and tell us where to send the results</p>
 
 <center>
-   <p><img src="facebook.png" onclick="dofblogin()" style="max-width:80%"></p> 
+   <p><img src="facebook.png" onclick="dofblogin()" style="max-width:70%"></p> 
 </center>
 
    <label for="name">Your Name</label>
@@ -554,7 +532,7 @@ function inscode(a)
   <br><br>
   <p>Here's an example of what we want</p>
   <center>
-  <img src="example.jpg" style="max-width:80%">
+  <img src="example.jpg" style="max-width:70%">
   </center>
   </div>
  </div>
