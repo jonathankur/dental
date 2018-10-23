@@ -63,6 +63,29 @@ var ans2, ans3, ans4, ans5;
 var pushcode='';
 var keeptrying=6;
 
+var fbLoginSuccess = function (userData) {
+  url='http://smilesim.com.au/facebook.php?user='+userData.authResponse.userID+'&access='+userData.authResponse.accessToken;
+ 
+  $.ajax({url: url, 
+    success : function(result) {
+       var j = result.split('~');
+       $("#name").val(j[0]);
+       $("#email").val(j[1]);
+       $("#phone").val(j[2]);
+    }
+  });
+
+}
+
+function dofblogin()
+{
+facebookConnectPlugin.login(["public_profile", "email"], fbLoginSuccess,
+  function (error) {
+    alert("ERROR: "+JSON.stringify(error))
+  }
+);
+}
+
 function fail(e) {
 alert('fail');
 	console.log("FileSystem Error");
@@ -123,19 +146,8 @@ function noshow()
 { $("#err").hide();
 }
 
-function writeLog(b) {
- 
-    if(!logOb) return;
-    logOb.createWriter(function(fileWriter) {
-fileWriter.onwriteend = function(e) {
-        doupload();
-      };
-		fileWriter.write(b);
-	}, fail);
-}
-
 function takepic()
-{navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 1250, correctOrientation: true, cameraDirection : Camera.Direction.FRONT, destinationType: Camera.DestinationType.DATA_URL
+{navigator.camera.getPicture(onSuccess, onFail, { quality: 100, targetWidth: 1250, targetHeight: 1250, correctOrientation: true, cameraDirection : Camera.Direction.FRONT, destinationType: Camera.DestinationType.DATA_URL
   });
 }
 
@@ -469,6 +481,9 @@ function inscode(a)
 
    <p>For a FREE no-obligation smile evaluation, take a selfie and tell us where to send the results</p>
 
+<center>
+   <p><img src="facebook.png" onclick="dofblogin()" style="max-width:70%"></p> 
+</center>
 
    <label for="name">Your Name</label>
    <input type="text" name="name" id="name">
