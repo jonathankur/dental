@@ -54,8 +54,6 @@ background-color:dodgerblue;
 	<script src="jquery.mobile-1.4.5.min.js"></script>
 	<script>
 
-
-var juser=0, jobno=0;
 var tot;
 var imex=0;
 var picnum="";
@@ -147,7 +145,7 @@ function noshow()
 }
 
 function takepic()
-{navigator.camera.getPicture(onSuccess, onFail, { quality: 100, targetWidth: 1250, targetHeight: 1250, correctOrientation: true, cameraDirection : Camera.Direction.FRONT, destinationType: Camera.DestinationType.DATA_URL
+{navigator.camera.getPicture(onSuccess, onFail, { quality: 80, targetWidth: 850, targetHeight: 850, correctOrientation: true, cameraDirection : Camera.Direction.FRONT, destinationType: Camera.DestinationType.DATA_URL
   });
 }
 
