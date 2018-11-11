@@ -60,29 +60,7 @@ var picnum="";
 var ans2, ans3, ans4, ans5;
 var pushcode='';
 var keeptrying=6;
-
-var fbLoginSuccess = function (userData) {
-  url='http://smilesim.com.au/facebook.php?user='+userData.authResponse.userID+'&access='+userData.authResponse.accessToken;
- 
-  $.ajax({url: url, 
-    success : function(result) {
-       var j = result.split('~');
-       $("#name").val(j[0]);
-       $("#email").val(j[1]);
-       $("#phone").val(j[2]);
-    }
-  });
-
-}
-
-function dofblogin()
-{
-facebookConnectPlugin.login(["public_profile", "email"], fbLoginSuccess,
-  function (error) {
-    alert("ERROR: "+JSON.stringify(error))
-  }
-);
-}
+var uniq='';
 
 function fail(e) {
 alert('fail');
@@ -97,6 +75,14 @@ function errorHandler()
 function jkinit()
 {  picnum=window.localStorage.getItem('picnum');
    if (!picnum) picnum='';
+   uniq=window.localStorage.getItem('uniq');
+   if (!uniq) {
+     var d  = new Date();
+     var n1 = Math.floor(Math.random()*26)+65;
+     var n2 = Math.floor(Math.random()*26)+65;
+     uniq=String.fromCharCode(n1)+ d.getTime().toString() + String.fromCharCode(n2);
+     window.localStorage.setItem('uniq',uniq);
+   }
    if (picnum.length) {
        initonesignal(); 
        showmine();
@@ -161,6 +147,7 @@ function onSuccess(imageData)
      ans3 : ans3,
      ans4 : ans4,
      ans5 : ans5,
+     uniq : uniq,
      pic : imageData
   };
   $.post(url,data)
@@ -326,7 +313,7 @@ function savePush(s)
 function showmine()
 { keeptrying = 6;
   getonestatus();
-  url='http://smilesim.com.au/showmine.php?picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+  url='http://smilesim.com.au/showmine.php?uniq='+encodeURIComponent(window.localStorage.getItem('uniq'))+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
   $.ajax({url: url, 
     success : function(result) {
        $("#mydets").html(result);
@@ -336,6 +323,18 @@ function showmine()
   });
 }
 
+function showone(a)
+{ window.localStorage.setItem('picnum',a);
+
+  url='http://smilesim.com.au/showmine.php?force=1&uniq='+encodeURIComponent(window.localStorage.getItem('uniq'))+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+  $.ajax({url: url, 
+    success : function(result) {
+       $("#mydets").html(result);
+       $("#mydets").trigger('create');
+       jQuery.mobile.changePage("#mypage", {transition: "flip"});
+    }
+  });
+}
 
 function stoplook()
 { jQuery.mobile.changePage("#page6", {transition: "flip"});
@@ -423,7 +422,7 @@ function inscode(a)
    <center>
    <b  class="jhead">ORTHODONTICS</b>
    <div name="picholder4" id="picholder4" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
-    <img id="expic4" name="expic4" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
+    <img id="expic4" name="expic4" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
    </div>
    <div class="befaft" id="bef4">BEFORE</div>
    <br>
@@ -446,7 +445,7 @@ function inscode(a)
    <center>
    <b  class="jhead">COSMETICS</b>
    <div name="picholder5" id="picholder5" style="width:250px; overflow:hidden; height:287px; min-height:287px; position:relative">
-    <img id="expic5" name="expic5" style="position:absolute; left:0px" src="zfinal2.jpg" width="500">
+    <img id="expic5" name="expic5" style="position:absolute; left:0px" src="zfinal1.jpg" width="500">
    </div>
    <div class="befaft" id="bef5">BEFORE</div>
 
@@ -478,10 +477,6 @@ function inscode(a)
    <p style="font-size:1.3em; color:dodgerblue"><b>Are you curious to see how you could look?</b></p>
 
    <p>For a FREE no-obligation smile evaluation, take a selfie and tell us where to send the results</p>
-
-<center>
-   <p><img src="facebook.png" onclick="dofblogin()" style="max-width:70%"></p> 
-</center>
 
    <label for="name">Your Name</label>
    <input type="text" name="name" id="name">
