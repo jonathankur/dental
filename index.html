@@ -76,6 +76,12 @@ function jkinit()
 {  picnum=window.localStorage.getItem('picnum');
    if (!picnum) picnum='';
    uniq=window.localStorage.getItem('uniq');
+
+$('#dcode').keypress(function() {
+
+  $('#donthave').hide();
+});
+
    if (!uniq) {
      var d  = new Date();
      var n1 = Math.floor(Math.random()*26)+65;
@@ -244,6 +250,7 @@ function dosend()
 { url='http://smilesim.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~');
   $.ajax({url: url, 
     success : function(result) {
+      $("#donthave").show();
       var l = result.split('~');
       if (l[0]=='1') {
         page7(); 
@@ -489,7 +496,7 @@ function inscode(a)
    <br>
    <label for="phone">Dentist Code</label>
    <input type="text" name="dcode" id="dcode">
-   <a href="#" onclick="javascript:golook()"><small>Don't have a Dentist Code?</small></a>   
+   <a id = "donthave" href="#" onclick="javascript:golook()"><small>Don't have a Dentist Code?</small></a>   
    <br><div id="err" style="display:none; color:red; font-weight:bold"></div><br>
    <a href="#" class="ui-btn" onclick="dosend()">Continue</a>
 
