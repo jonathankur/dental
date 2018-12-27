@@ -224,6 +224,11 @@ function page7()
          if (tot) clearTimeout(tot);
 }
 
+function page6b()
+{ 
+         jQuery.mobile.changePage("#page6b", {transition: "flip"});
+         if (tot) clearTimeout(tot);
+}
 
 function apage2(a)
 {   ans2=a;
@@ -344,12 +349,25 @@ function showone(a)
 }
 
 function stoplook()
-{ jQuery.mobile.changePage("#page6", {transition: "flip"});
+{ jQuery.mobile.changePage("#page6b", {transition: "flip"});
 } 
 
 function inscode(a)
 { $("#dcode").val(a);
-  jQuery.mobile.changePage("#page6", {transition: "flip"});
+  jQuery.mobile.changePage("#page6b", {transition: "flip"});
+}
+
+function barscan()
+{  cordova.plugins.barcodeScanner.scan(
+      function (result) {
+        $("#dcode").val(result.text);
+        dosend();   
+      },
+      function (error) {
+      }
+   );
+
+
 }
 
 </script>
@@ -494,7 +512,26 @@ function inscode(a)
    <label for="phone">Phone Number</label>
    <input type="text" name="phone" id="phone">
    <br>
-   <label for="phone">Dentist Code</label>
+   <br><div id="err" style="display:none; color:red; font-weight:bold"></div><br>
+   <a href="#" class="ui-btn" onclick="page6b()">Continue</a>
+
+  </div>
+ </div>
+</div>
+
+<div data-role="page" id="page6b"  class="mypg">
+ <div role="main" class="ui-content">  
+  <div style="padding:0px 10px 0px 10px">
+   <center>
+   <b  class="jhead">SmileSim</b>
+   </center>
+   <br><br>
+   <p style="font-size:1.3em; color:dodgerblue"><b>Who will look after your dental needs?</b></p>
+
+   <p>If you have a letter from your dentist, please press the button below to scan the barcode on the letter</p>
+
+   <a href="javascript:barscan()" class="ui-btn ui-corner-all" style="background-color:dodgerblue"> Scan Barcode </a><br><br>
+   <label for="dcode">Dentist Code</label>
    <input type="text" name="dcode" id="dcode">
    <a id = "donthave" href="#" onclick="javascript:golook()"><small>Don't have a Dentist Code?</small></a>   
    <br><div id="err" style="display:none; color:red; font-weight:bold"></div><br>
@@ -503,7 +540,6 @@ function inscode(a)
   </div>
  </div>
 </div>
-
 
 <div data-role="page" id="page7" class="mypg">
  <div role="main" class="ui-content">  
