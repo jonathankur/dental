@@ -18,7 +18,8 @@
  <preference name='phonegap-version' value='cli-6.5.0' />
 <platform name="android">
  <icon src="icon.png" />
-
+ <preference name="android-minSdkVersion" value="15" />
+ 
 </platform>
 <platform name="ios">
  <icon src="icon.png" />
