@@ -38,7 +38,7 @@
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Allow the app to access your photos" />
     </plugin>
  
-<plugin name="onesignal-cordova-plugin" source="npm"  spec="2.4.5"  />
+<plugin name="onesignal-cordova-plugin" source="npm"  />
 <access origin="http://code.jquery.com" subdomains="true" />
 <access origin="http://smilesim.com.au" subdomains="true" />
 <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
