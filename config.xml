@@ -15,13 +15,14 @@
     <author href="https://build.phonegap.com" email="support@phonegap.com">
         Jonathan Kur 
     </author>
- <preference name='phonegap-version' value='cli-6.5.0' />
-<allow-intent href="http://*/*" />
-<allow-intent href="https://*/*" />
-<access origin="http://code.jquery.com" />
-<access origin="http://fonts.googleapis.com" />
-<access origin="http://smilesim.dental" />
-<access origin="https://smilesim.dental" />
+ <preference name='phonegap-version' value='cli-6.5.0' />    
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
 <allow-navigation href="*" />
 
 <platform name="android">
