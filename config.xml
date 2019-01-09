@@ -2,7 +2,7 @@
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "au.com.smilesim"
-        version     = "1.0.5" >
+        version     = "1.1.0" >
 
     <!-- versionCode is optional and Android only -->
 
@@ -22,6 +22,7 @@
 <access origin="http://fonts.googleapis.com" />
 <access origin="http://smilesim.dental" />
 <access origin="https://smilesim.dental" />
+<allow-navigation href="*" />
 
 <platform name="android">
  <icon src="icon.png" />
