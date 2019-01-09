@@ -16,8 +16,10 @@
         Jonathan Kur 
     </author>
  <preference name='phonegap-version' value='cli-6.5.0' />
+<allow-intent href="http://*/*" />
+<allow-intent href="https://*/*" />
 <access origin="http://code.jquery.com" />
-<access origin="http://fonts.google.apis.com" />
+<access origin="http://fonts.googleapis.com" />
 <access origin="http://smilesim.dental" />
 <access origin="https://smilesim.dental" />
 
