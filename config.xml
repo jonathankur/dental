@@ -38,6 +38,9 @@
  <icon src="icon120.png" width="120" height="120" />
  <icon src="icon152.png" width="152" height="152" />
 </platform>
+
+<plugin name="cordova-plugin-whitelist" source="npm" />
+
 <plugin name="cordova-plugin-camera">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="Allow the app to use your camera" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Allow the app to access your photos" />
