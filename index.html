@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="mobile-web-app-capable" content="yes">
 	<title>SmileSim</title>
- <link rel="stylesheet" href="jm.css" />
+ <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 <style type="text/css">
 .mycol {
@@ -50,9 +50,7 @@ background-color:dodgerblue;
 
 </style>
 	<script src="phonegap.js"></script>
-<script type="text/javascript" src="barcodescanner.js"></script>
-      
-      <script src="jquery.js"></script>
+       <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="jquery.mobile-1.4.5.min.js"></script>
 	<script>
 
@@ -144,7 +142,7 @@ function takepic()
 }
 
 function onSuccess(imageData) 
-{ var url='http://smilesim.com.au/uppic.php';
+{ var url='http://mysmilesim.dental/uppic.php';
   var data = {
      dcode : $("#dcode").val(),
      name : $("#name").val(),
@@ -254,7 +252,7 @@ function apage5(a)
 }
 
 function dosend()
-{ url='http://smilesim.com.au/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~');
+{ url='http://mysmilesim.dental/dcode.php?data='+encodeURIComponent($("#dcode").val()+'~');
   $.ajax({url: url, 
     success : function(result) {
       $("#donthave").show();
@@ -295,7 +293,7 @@ function golook()
 function plook()
 { $("#lp1").hide();
   $("#lp2").show();
-  url='http://smilesim.com.au/find.php?pcd='+encodeURIComponent($("#pcd").val());
+  url='http://mysmilesim.dental/find.php?pcd='+encodeURIComponent($("#pcd").val());
   $.ajax({url: url, 
     success : function(result) {
        $("#lp2").html(result);
@@ -317,7 +315,7 @@ function getonestatus()
 }
 
 function savePush(s)
-{ url='http://smilesim.com.au/savepush.php?id='+s+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+{ url='http://mysmilesim.dental/savepush.php?id='+s+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
   $.ajax({url: url, 
     success : function(result) {
     }
@@ -327,7 +325,7 @@ function savePush(s)
 function showmine()
 { keeptrying = 6;
   getonestatus();
-  url='http://smilesim.com.au/showmine.php?uniq='+encodeURIComponent(window.localStorage.getItem('uniq'))+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+  url='http://mysmilesim.dental/showmine.php?uniq='+encodeURIComponent(window.localStorage.getItem('uniq'))+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
   $.ajax({url: url, 
     success : function(result) {
        $("#mydets").html(result);
@@ -340,7 +338,7 @@ function showmine()
 function showone(a)
 { window.localStorage.setItem('picnum',a);
 
-  url='http://smilesim.com.au/showmine.php?force=1&uniq='+encodeURIComponent(window.localStorage.getItem('uniq'))+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
+  url='http://mysmilesim.dental/showmine.php?force=1&uniq='+encodeURIComponent(window.localStorage.getItem('uniq'))+'&picnum='+encodeURIComponent(window.localStorage.getItem('picnum'));
   $.ajax({url: url, 
     success : function(result) {
        $("#mydets").html(result);
@@ -572,7 +570,7 @@ function barscan()
    <b  class="jhead">SmileSim</b>
    </center>
    <div name="lp1" id="lp1">
-    <p>Ask your dentist for their <b>SmileSim</b> Code, or suggest that they register with us at :-<br><span style="color:dodgerblue">http://smilesim.com.au</span></p>
+    <p>Ask your dentist for their <b>SmileSim</b> Code, or suggest that they register with us at :-<br><span style="color:dodgerblue">http://mysmilesim.dental</span></p>
     <p>Alternatively, search for a participating dentist in your area by entering your Postcode below</p><br>
     <input type="text" name="pcd" id="pcd" placeholder="Your Postcode"><br>
     <a href="#" class="ui-btn" onclick="plook()">Look-Up</a>

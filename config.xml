@@ -16,6 +16,11 @@
         Jonathan Kur 
     </author>
  <preference name='phonegap-version' value='cli-6.5.0' />
+<access origin="http://code.jquery.com" />
+<access origin="http://fonts.google.apis.com" />
+<access origin="http://smilesim.dental" />
+<access origin="https://smilesim.dental" />
+
 <platform name="android">
  <icon src="icon.png" />
  <preference name="android-minSdkVersion" value="15" />
