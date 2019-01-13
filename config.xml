@@ -46,12 +46,12 @@
         <variable name="CAMERA_USAGE_DESCRIPTION" value="Allow the app to use your camera" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Allow the app to access your photos" />
     </plugin>
-<plugin name="cordova-plugin-barcodescanner">
+<plugin name="phonegap-plugin-barcodescanner">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="Allow the app to use your camera" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Allow the app to access your photos" />
     </plugin>
  
-<plugin name="onesignal-cordova-plugin" source="npm"  />
+<plugin name="onesignal-cordova-plugin" source="npm" spec="2.4.5" />
 <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
     <string>need camera access to take pictures</string>
 </edit-config>
