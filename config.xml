@@ -16,18 +16,15 @@
         Jonathan Kur 
     </author>
  <preference name='phonegap-version' value='cli-8.0.0' />    
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-<allow-navigation href="*" />
+ <access origin="http://code.jquery.com" subdomains="true" />
+<access origin="http://mysmilesim.dental" subdomains="true" />
 
 <platform name="android">
  <icon src="icon.png" />
- <preference name="android-minSdkVersion" value="15" />
+
+<preference name="android-build-tool" value="gradle" />
+<preference name="android-minSdkVersion" value="16" />
+
  
 </platform>
 <platform name="ios">
@@ -41,6 +38,10 @@
 
 <plugin name="cordova-plugin-whitelist" source="npm" />
 
+  <plugin name="cordova-android-support-gradle-release" source="npm">
+        <variable name="ANDROID_SUPPORT_VERSION" value="26.+" />
+    </plugin>
+
 <plugin name="cordova-plugin-camera">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="Allow the app to use your camera" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Allow the app to access your photos" />
@@ -51,8 +52,6 @@
     </plugin>
  
 <plugin name="onesignal-cordova-plugin" source="npm" spec="2.4.5" />
-<access origin="http://code.jquery.com" subdomains="true" />
-<access origin="http://smilesim.com.au" subdomains="true" />
 <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
     <string>need camera access to take pictures</string>
 </edit-config>
